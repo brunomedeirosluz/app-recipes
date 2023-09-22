@@ -3,8 +3,8 @@ import { fireEvent, screen } from '@testing-library/react';
 import App from '../App';
 import { renderWithRouter } from '../helps/renderWithRouter';
 
-test.only('O botão deve estar desativado se o email e a senha forem inválido', async () => {
-  const { user } = renderWithRouter(
+test('O botão deve estar desativado se o email e a senha forem inválidos', async () => {
+  renderWithRouter(
     <App />,
   );
 
@@ -14,15 +14,14 @@ test.only('O botão deve estar desativado se o email e a senha forem inválido',
 
   expect(loginSubmitButton).toBeDisabled();
 
-  await fireEvent.change(emailInput, { target: { value: 'email@email.com' } });
-  await fireEvent.change(passwordInput, { target: { value: 'senhaSegura' } });
+  fireEvent.change(emailInput, { target: { value: 'email@email.com' } });
+  fireEvent.change(passwordInput, { target: { value: 'senhaSegura' } });
 
-  expect(loginSubmitButton).toBeInTheDocument();
+  expect(loginSubmitButton).toBeEnabled();
 
-  await user.click(loginSubmitButton);
+  fireEvent.click(loginSubmitButton);
 
-  const meals = await screen.getByRole('heading', { name: /meals page/i });
-  expect(meals).toBeInTheDocument();
+  await screen.findByTestId('meals-heading');
 });
 
 test('O botão deve estar ativado se o email e a senha forem válidos', () => {
