@@ -1,5 +1,11 @@
-export default function Meals() {
+import Header from '../Header';
+
+function Meals() {
   return (
-    <h1>Meals Page</h1>
+    <div>
+      <Header pageTitle="Meals" showSearchIcon />
+    </div>
   );
 }
+
+export default Meals;
