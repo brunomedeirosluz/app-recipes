@@ -21,7 +21,7 @@ test('O botão deve estar desativado se o email e a senha forem inválidos', asy
 
   fireEvent.click(loginSubmitButton);
 
-  await screen.findByTestId('meals-heading');
+  await screen.findByText('Meals');
 });
 
 test('O botão deve estar ativado se o email e a senha forem válidos', () => {
