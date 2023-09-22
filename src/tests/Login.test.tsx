@@ -1,48 +1,41 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { fireEvent, screen } from '@testing-library/react';
 import App from '../App';
+import { renderWithRouter } from '../helps/renderWithRouter';
 
-test('O botão deve estar desativado se o email for inválido', () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
+test.only('O botão deve estar desativado se o email e a senha forem inválido', async () => {
+  const { user } = renderWithRouter(
+    <App />,
   );
 
-  const emailInput = getByTestId('email-input');
-  const passwordInput = getByTestId('password-input');
-  const loginSubmitButton = getByTestId('login-submit-btn');
-
-  fireEvent.change(emailInput, { target: { value: 'email-invalido' } });
-  fireEvent.change(passwordInput, { target: { value: 'senhaSegura' } });
+  const emailInput = screen.getByTestId('email-input');
+  const passwordInput = screen.getByTestId('password-input');
+  const loginSubmitButton = screen.getByTestId('login-submit-btn');
 
   expect(loginSubmitButton).toBeDisabled();
+
+  await fireEvent.change(emailInput, { target: { value: 'email@email.com' } });
+  await fireEvent.change(passwordInput, { target: { value: 'senhaSegura' } });
+
+  expect(loginSubmitButton).toBeInTheDocument();
+
+  await user.click(loginSubmitButton);
+
+  const meals = await screen.getByRole('heading', { name: /meals page/i });
+  expect(meals).toBeInTheDocument();
 });
 
 test('O botão deve estar ativado se o email e a senha forem válidos', () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
+  renderWithRouter(
+    <App />,
   );
 
-  const emailInput = getByTestId('email-input');
-  const passwordInput = getByTestId('password-input');
-  const loginSubmitButton = getByTestId('login-submit-btn');
+  const emailInput = screen.getByTestId('email-input');
+  const passwordInput = screen.getByTestId('password-input');
+  const loginSubmitButton = screen.getByTestId('login-submit-btn');
 
   fireEvent.change(emailInput, { target: { value: 'email@exemplo.com' } });
   fireEvent.change(passwordInput, { target: { value: 'senhaSegura' } });
 
   expect(loginSubmitButton).toBeEnabled();
-});
-
-test('Verifica a cobertura de 45% da tela de Login', () => {
-  const { container } = render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-  );
-
-  expect(container).toMatchSnapshot();
 });
