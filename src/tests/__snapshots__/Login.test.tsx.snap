@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Verifica a cobertura de 45% da tela de Login 1`] = `
+<div>
+  <div>
+    <form>
+      <input
+        data-testid="email-input"
+        name="email"
+        placeholder="E-Mail"
+        type="email"
+        value=""
+      />
+      <input
+        data-testid="password-input"
+        name="password"
+        placeholder="Password"
+        type="password"
+        value=""
+      />
+      <button
+        data-testid="login-submit-btn"
+        disabled=""
+        type="submit"
+      >
+        Enter
+      </button>
+    </form>
+  </div>
+</div>
+`;
