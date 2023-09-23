@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 interface HeaderProps {
   pageTitle: string;
@@ -32,12 +33,7 @@ function Header({ pageTitle, showSearchIcon = true }: HeaderProps) {
             />
           </button>
           {isSearchVisible && (
-            <input
-              type="text"
-              placeholder="Search"
-              data-testid="search-input"
-              onBlur={ toggleSearch }
-            />
+            <SearchBar />
           )}
         </>
       )}

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Header from '../Header';
+import Header from '../components/Header';
 
 const SEARCH_ICON = 'search-top-btn';
 const SEARCH_INPUT = 'search-input';
