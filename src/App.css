@@ -15,6 +15,16 @@
   max-height: 80vh;
 }
 
+.footer {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  justify-content: space-between;
+}
+
 /*
 #iceLeft {
   animation: clink .8s infinite ease;
