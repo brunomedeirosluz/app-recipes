@@ -16,13 +16,13 @@
 }
 
 .footer {
-  display: flex;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
   background-color: #f0f0f0;
-  padding: 10px;
+  bottom: 0;
+  display: flex;
   justify-content: space-between;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
 }
 
 /*
