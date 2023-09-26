@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import RouteProvider from './context/RouteProvider';
 import MealsProvider from './context/MealsProvider';
 
 ReactDOM
@@ -10,7 +11,9 @@ ReactDOM
   .render(
     <MealsProvider>
       <BrowserRouter>
-        <App />
+        <RouteProvider>
+          <App />
+        </RouteProvider>
       </BrowserRouter>
     </MealsProvider>,
   );
