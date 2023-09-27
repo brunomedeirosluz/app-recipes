@@ -3,17 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import RouteProvider from './context/RouteProvider';
-import MealsProvider from './context/MealsProvider';
+import GlobalProvider from './context/GlobalProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root') as HTMLElement)
   .render(
-    <MealsProvider>
+    <GlobalProvider>
       <BrowserRouter>
-        <RouteProvider>
-          <App />
-        </RouteProvider>
+        <App />
       </BrowserRouter>
-    </MealsProvider>,
+    </GlobalProvider>,
   );
