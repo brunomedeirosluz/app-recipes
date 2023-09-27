@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRoute } from '../context/RouteContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchFirstLetter, fetchIngredient, fetchName } from '../services/FetchAPI';
 import { fetchFirstLetterDrinks,
   fetchIngredientDrinks, fetchNameDrinks } from '../services/FetchAPIDrinks';
 
 function SearchBar() {
-  const { currentPath } = useRoute();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [value, setValue] = useState('');
@@ -18,7 +17,7 @@ function SearchBar() {
 
   const performSearch = async () => {
     const firstLetter = 'first letter';
-    const isMealsRoute = currentPath === '/meals';
+    const isMealsRoute = location.pathname === '/meals';
     const isInvalidLength = value === firstLetter && text.length > 1;
 
     if (isInvalidLength) {
@@ -29,27 +28,40 @@ function SearchBar() {
     let data = null;
 
     if (isMealsRoute) {
-      if (value === firstLetter) {
-        data = await fetchFirstLetter(text);
-      } else if (value === 'ingredient') {
-        data = await fetchIngredient(text);
-      } else if (value === 'name') {
-        data = await fetchName(text);
+      switch (value) {
+        case firstLetter:
+          data = await fetchFirstLetter(text);
+          break;
+        case 'ingredient':
+          data = await fetchIngredient(text);
+          break;
+        case 'name':
+          data = await fetchName(text);
+          console.log(data);
+          break;
+        default:
+          break;
       }
     } else {
-      if (value === firstLetter) {
-        data = await fetchFirstLetterDrinks(text);
-      } if (value === 'ingredient') {
-        data = await fetchIngredientDrinks(text);
-      } if (value === 'name') {
-        data = await fetchNameDrinks(text);
-        console.log(data);
+      switch (value) {
+        case firstLetter:
+          data = await fetchFirstLetterDrinks(text);
+          break;
+        case 'ingredient':
+          data = await fetchIngredientDrinks(text);
+          break;
+        case 'name':
+          data = await fetchNameDrinks(text);
+          console.log(data);
+          break;
+        default:
+          break;
       }
     }
 
-    if ((!data || (isMealsRoute && !data.meals)
-     || (!isMealsRoute && !data.drinks))
-     && text.trim()) {
+    const hasData = isMealsRoute ? data?.meals : data?.drinks;
+
+    if (!hasData && text.trim()) {
       window.alert("Sorry, we haven't found any recipes for these filters.");
     }
 
@@ -59,13 +71,14 @@ function SearchBar() {
   const handleRedirect = (data: any) => {
     if (data) {
       let id;
-      if (currentPath === '/meals' && data.meals && data.meals.length === 1) {
+      if (location.pathname === '/meals' && data.meals && data.meals.length === 1) {
         id = data.meals[0].idMeal;
-      } else if (currentPath === '/drinks' && data.drinks && data.drinks.length === 1) {
+      } else if (location.pathname === '/drinks' && data.drinks
+      && data.drinks.length === 1) {
         id = data.drinks[0].idDrink;
       }
       if (id) {
-        const recipeRoute = currentPath === '/meals' ? 'meals' : 'drinks';
+        const recipeRoute = location.pathname === '/meals' ? 'meals' : 'drinks';
         navigate(`/${recipeRoute}/${id}`);
       }
     }

@@ -1,7 +1,6 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
-import RouteProvider from '../context/RouteProvider';
 
 const SEARCH_INPUT = 'search-input';
 const EXEC_SEARCH_BTN = 'exec-search-btn';
@@ -9,9 +8,7 @@ const EXEC_SEARCH_BTN = 'exec-search-btn';
 test('Renderiza os componentes de SearchBar', () => {
   const { getByTestId } = render(
     <BrowserRouter>
-      <RouteProvider>
-        <SearchBar />
-      </RouteProvider>
+      <SearchBar />
     </BrowserRouter>,
   );
   const searchInput = getByTestId(SEARCH_INPUT);
@@ -30,9 +27,7 @@ test('Renderiza os componentes de SearchBar', () => {
 test('Executa uma pesquisa ao clicar no botão SEARCH', async () => {
   const { getByTestId } = render(
     <BrowserRouter>
-      <RouteProvider>
-        <SearchBar />
-      </RouteProvider>
+      <SearchBar />
     </BrowserRouter>,
   );
 
@@ -47,9 +42,7 @@ test('Executa uma pesquisa ao clicar no botão SEARCH', async () => {
 test('Seleciona a opção "Ingredient" e verifica se o valor do estado é atualizado corretamente', () => {
   const { getByTestId } = render(
     <BrowserRouter>
-      <RouteProvider>
-        <SearchBar />
-      </RouteProvider>
+      <SearchBar />
     </BrowserRouter>,
   );
 
@@ -65,9 +58,7 @@ test('Seleciona a opção "Ingredient" e verifica se o valor do estado é atuali
 test('Seleciona a opção "First letter" e verifica se o valor do estado é atualizado corretamente', () => {
   const { getByTestId } = render(
     <BrowserRouter>
-      <RouteProvider>
-        <SearchBar />
-      </RouteProvider>
+      <SearchBar />
     </BrowserRouter>,
   );
 
@@ -83,9 +74,7 @@ test('Seleciona a opção "First letter" e verifica se o valor do estado é atua
 test('Verifica se a pesquisa não é executada ao clicar em "SEARCH" com campo de pesquisa vazio', async () => {
   const { getByTestId } = render(
     <BrowserRouter>
-      <RouteProvider>
-        <SearchBar />
-      </RouteProvider>
+      <SearchBar />
     </BrowserRouter>,
   );
 
@@ -96,9 +85,7 @@ test('Verifica se a pesquisa não é executada ao clicar em "SEARCH" com campo d
 test('Verifica se a pesquisa é executada corretamente ao selecionar "Name" e inserir um valor válido', async () => {
   const { getByTestId } = render(
     <BrowserRouter>
-      <RouteProvider>
-        <SearchBar />
-      </RouteProvider>
+      <SearchBar />
     </BrowserRouter>,
   );
 

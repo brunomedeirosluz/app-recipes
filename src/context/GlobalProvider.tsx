@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GlobalContext from './MealsContext';
+import GlobalContext from './GlobalContext';
 import { DataType } from '../Type/type';
 
 type UserProviderProps = {

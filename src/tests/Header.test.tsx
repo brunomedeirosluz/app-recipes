@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Header from '../components/Header';
-import RouteProvider from '../context/RouteProvider';
 
 const SEARCH_ICON = 'search-top-btn';
 const SEARCH_INPUT = 'search-input';
@@ -45,9 +44,7 @@ test('Renderiza o componente Header com título e sem ícone de pesquisa', () =>
 test('Renderiza o componente Header com campo de busca ao clicar no ícone de pesquisa', () => {
   render(
     <BrowserRouter>
-      <RouteProvider>
-        <Header pageTitle="Test Page" showSearchIcon />
-      </RouteProvider>
+      <Header pageTitle="Test Page" showSearchIcon />
     </BrowserRouter>,
   );
 
@@ -63,9 +60,7 @@ test('Renderiza o componente Header com campo de busca ao clicar no ícone de pe
 test('Esconde o campo de busca ao clicar novamente no ícone de pesquisa', () => {
   render(
     <BrowserRouter>
-      <RouteProvider>
-        <Header pageTitle="Test Page" showSearchIcon />
-      </RouteProvider>
+      <Header pageTitle="Test Page" showSearchIcon />
     </BrowserRouter>,
   );
 

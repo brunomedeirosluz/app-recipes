@@ -13,19 +13,17 @@ import FavoriteRecipes from './pages/Favorite-recipes';
 
 export default function App() {
   return (
-
     <Routes>
       <Route path="/" element={ <Login /> } />
+      <Route path="/meals/:id/in-progress" element={ <MealProgress /> } />
+      <Route path="/meals/:id" element={ <MealsDetails /> } />
       <Route path="/meals" element={ <Meals /> } />
+      <Route path="/drinks/:id/in-progress" element={ <DrinksProgress /> } />
+      <Route path="/drinks/:id" element={ <DrinksDetails /> } />
       <Route path="/drinks" element={ <Drinks /> } />
-      <Route path="/meals/:id-da-receita" element={ <MealsDetails /> } />
-      <Route path="/drinks/:id-da-receita" element={ <DrinksDetails /> } />
-      <Route path="/meals/:id-da-receita/in-progress" element={ <MealProgress /> } />
-      <Route path="/drinks/:id-da-receita/in-progress" element={ <DrinksProgress /> } />
       <Route path="/profile" element={ <Profile /> } />
       <Route path="/done-recipes" element={ <DoneRecipes /> } />
       <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
     </Routes>
-
   );
 }

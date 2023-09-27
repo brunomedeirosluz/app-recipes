@@ -21,13 +21,9 @@ function Recipes() {
         : urlDrink;
       console.log(baseUrl);
 
-      // const searchUrl = 'search.php?s=';
+      const searchUrl = 'search.php?s=';
 
-      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-      const data = await response.json();
-      // return data;
-
-      // const data = await fetchApi(`${baseUrl}${searchUrl}`);
+      const data = await fetchApi(`${baseUrl}${searchUrl}`);
       const slicedData = data[`${path}`].slice(0, 12); // Limitar a 12 receitas
       setDataApi({ ...dataApi, [path]: slicedData });
       const categoriesData = await fetchApi(`${baseUrl}list.php?c=list`);
@@ -68,16 +64,14 @@ function Recipes() {
   return (
     <div>
       {categories.map(({ strCategory }) => (
-        <label key={ strCategory }>
-          <input
-            type="radio"
-            name="categories"
-            data-testid={ `${strCategory}-category-filter` }
-            onClick={ () => handleFilterByCategory(strCategory) }
-            checked={ selectedOption === strCategory }
-          />
+
+        <button
+          key={ strCategory }
+          data-testid={ `${strCategory}-category-filter` }
+          onClick={ () => handleFilterByCategory(strCategory) }
+        >
           {strCategory}
-        </label>
+        </button>
       ))}
 
       <button
@@ -87,7 +81,7 @@ function Recipes() {
         All
       </button>
 
-      {/* {(path === 'drinks')
+      {(path === 'drinks')
         && dataApi.drinks.map((recipe: DrinkType, index: number) => (
           <Link key={ recipe.idDrink } to={ `/${path}/${recipe.idDrink}` }>
             <div
@@ -117,7 +111,7 @@ function Recipes() {
               />
             </div>
           </Link>
-        ))} */}
+        ))}
     </div>
   );
 }
