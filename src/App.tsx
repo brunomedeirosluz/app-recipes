@@ -13,6 +13,7 @@ import FavoriteRecipes from './pages/Favorite-recipes';
 
 export default function App() {
   return (
+
     <Routes>
       <Route path="/" element={ <Login /> } />
       <Route path="/meals" element={ <Meals /> } />
@@ -25,5 +26,6 @@ export default function App() {
       <Route path="/done-recipes" element={ <DoneRecipes /> } />
       <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
     </Routes>
+
   );
 }

@@ -46,6 +46,13 @@ function SearchBar() {
         console.log(data);
       }
     }
+
+    if ((!data || (isMealsRoute && !data.meals)
+     || (!isMealsRoute && !data.drinks))
+     && text.trim()) {
+      window.alert("Sorry, we haven't found any recipes for these filters.");
+    }
+
     return data;
   };
 
