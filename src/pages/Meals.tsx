@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
 import { fetchName, fetchCategory } from '../services/FetchAPI';
+import GlobalContext from '../context/GlobalContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Recipes from '../components/Recipes';
-import GlobalContext from '../context/GlobalContext';
 
 type Recipe = {
   idMeal: string;

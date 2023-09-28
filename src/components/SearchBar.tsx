@@ -24,12 +24,12 @@ function SearchBar(): JSX.Element {
     const firstLetter = 'first letter';
     const isMealsRoute = location.pathname === '/meals';
     const isInvalidLength = value === firstLetter && text.length > 1;
-
     if (isInvalidLength) {
       window.alert('Your search must have only 1 (one) character');
       return null;
+    } if (!text.trim() || !value.trim()) {
+      return null;
     }
-
     let data = null;
 
     if (isMealsRoute) {
