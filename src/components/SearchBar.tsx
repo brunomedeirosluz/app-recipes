@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchFirstLetter, fetchIngredient, fetchName } from '../services/FetchAPI';
 import {
@@ -6,14 +6,15 @@ import {
   fetchIngredientDrinks,
   fetchNameDrinks,
 } from '../services/FetchAPIDrinks';
+import GlobalContext from '../context/GlobalContext';
 
 function SearchBar(): JSX.Element {
+  const { setDataApi } = useContext(GlobalContext);
   const location = useLocation();
   const navigate = useNavigate();
 
   const [value, setValue] = useState('');
   const [text, setText] = useState('');
-  const [recipeCards, setRecipeCards] = useState<JSX.Element[] | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -68,7 +69,7 @@ function SearchBar(): JSX.Element {
     if (!hasData && text.trim()) {
       window.alert("Sorry, we haven't found any recipes for these filters.");
     }
-
+    setDataApi(data);
     return data;
   };
 
@@ -77,8 +78,7 @@ function SearchBar(): JSX.Element {
       let id;
       if (location.pathname === '/meals' && data.meals && data.meals.length === 1) {
         id = data.meals[0].idMeal;
-      } else if (location.pathname === '/drinks' && data.drinks
-      && data.drinks.length === 1) {
+      } if (location.pathname === '/drinks' && data.drinks && data.drinks.length === 1) {
         id = data.drinks[0].idDrink;
       }
       if (id) {
@@ -88,79 +88,54 @@ function SearchBar(): JSX.Element {
     }
   };
 
-  const handleSearch = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const isMealsRoute = location.pathname === '/meals';
     const data = await performSearch();
     handleRedirect(data);
-    if (data && (Array.isArray(data.meals) || Array.isArray(data.drinks))) {
-      const first12Items = isMealsRoute
-        ? data.meals?.slice(0, 12)
-        : data.drinks?.slice(0, 12);
-      const cards = first12Items?.map((item: any, index: any) => (
-        <div key={ item.idMeal || item.idDrink } data-testid={ `${index}-recipe-card` }>
-          <img
-            src={ item.strMealThumb || item.strDrinkThumb }
-            alt={ item.strMeal || item.strDrink }
-            data-testid={ `${index}-card-img` }
-          />
-          <p data-testid={ `${index}-card-name` }>{item.strMeal || item.strDrink}</p>
-        </div>
-      ));
-      setRecipeCards(cards);
-    }
   };
 
   return (
-    <>
-      <form onSubmit={ handleSearch }>
-        <input
-          type="text"
-          placeholder="Search"
-          data-testid="search-input"
-          onChange={ (event) => setText(event.target.value) }
-        />
-        <input
-          type="radio"
-          name="radio"
-          id="ingredient"
-          value="ingredient"
-          onChange={ handleChange }
-          data-testid="ingredient-search-radio"
-        />
-        <label htmlFor="ingredient">Ingredient</label>
-
-        <input
-          type="radio"
-          name="radio"
-          id="name"
-          value="name"
-          onChange={ handleChange }
-          data-testid="name-search-radio"
-        />
-        <label htmlFor="name">Name</label>
-
-        <input
-          type="radio"
-          name="radio"
-          id="first letter"
-          value="first letter"
-          onChange={ handleChange }
-          data-testid="first-letter-search-radio"
-        />
-        <label htmlFor="first letter">First letter</label>
-
-        <button
-          data-testid="exec-search-btn"
-          type="submit"
-        >
-          SEARCH
-        </button>
-      </form>
-      <div className="recipe-cards-container">
-        {recipeCards}
-      </div>
-    </>
+    <form onSubmit={ handleSearch }>
+      <input
+        type="text"
+        placeholder="Search"
+        data-testid="search-input"
+        onChange={ (event) => setText(event.target.value) }
+      />
+      <input
+        type="radio"
+        name="radio"
+        id="ingredient"
+        value="ingredient"
+        onChange={ handleChange }
+        data-testid="ingredient-search-radio"
+      />
+      <label htmlFor="ingredient">Ingredient</label>
+      <input
+        type="radio"
+        name="radio"
+        id="name"
+        value="name"
+        onChange={ handleChange }
+        data-testid="name-search-radio"
+      />
+      <label htmlFor="name">Name</label>
+      <input
+        type="radio"
+        name="radio"
+        id="first letter"
+        value="first letter"
+        onChange={ handleChange }
+        data-testid="first-letter-search-radio"
+      />
+      <label htmlFor="first letter">First letter</label>
+      <button
+        data-testid="exec-search-btn"
+        type="submit"
+      >
+        SEARCH
+      </button>
+    </form>
   );
 }
 

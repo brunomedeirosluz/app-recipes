@@ -27,6 +27,12 @@ export const fetchApi = async (link: string) => {
   const data = await response.json();
   return data;
 };
+
+export const fetchCategory = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+  const data = await response.json();
+  return data;
+};
 // // Exemplo de uso para buscar ingredientes de drinks
 // const ingredient = 'gin';
 // const ingredientData = await fetchApi('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=', ingredient);
