@@ -27,26 +27,25 @@
 
 .recipe-card {
   border: 1px solid #ccc;
-  padding: 16px;
-  margin: 16px;
-  width: 200px;
-  text-align: center;
-  background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  vertical-align: top;
   box-sizing: border-box;
+  display: inline-block;
+  margin: 16px;
+  padding: 16px;
+  text-align: center;
+  vertical-align: top;
+  width: 200px;
 }
 
 .recipe-card img {
-  max-width: 100%;
-  height: auto;
   border-radius: 8px;
+  height: auto;
+  max-width: 100%;
 }
 
 .recipe-card p {
+  font-weight: 700;
   margin-top: 8px;
-  font-weight: bold;
 }
 
 /*
