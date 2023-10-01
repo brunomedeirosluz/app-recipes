@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router';
 import { fetchRecipeDrink, fetchRecipeMeal } from '../services/FetchAPI';
+import { DoneRecipesType } from '../Type/type';
 
 function FilterIngredients(data) {
   const ingredients = Object.keys(data).reduce((acc, key) => {
@@ -19,11 +20,19 @@ function FilterIngredients(data) {
 function RecipeDetails() {
   const [data, setData] = useState<any>();
   const [isDrink, setIsDrink] = useState(false);
+  const [isRecipeDone, setIsRecipeDone] = useState(false);
   const { id } = useParams();
   const location = useLocation();
 
+  const doneRecipesData = localStorage.getItem('doneRecipes');
+
   useEffect(() => {
     const fetchRecipe = async () => {
+      if (doneRecipesData) {
+        const doneRecipes = JSON.parse(doneRecipesData);
+        const result = doneRecipes.some((obj: DoneRecipesType) => obj.id === id);
+        setIsRecipeDone(result);
+      }
       if (location.pathname.startsWith('/drinks/') && id) {
         try {
           setIsDrink(true);
@@ -42,7 +51,7 @@ function RecipeDetails() {
       }
     };
     fetchRecipe();
-  }, [id, location]);
+  }, [id, location, doneRecipesData]);
 
   if (data && isDrink) {
     const filteredIngredients = FilterIngredients(data);
@@ -65,6 +74,11 @@ function RecipeDetails() {
             </li>))}
         </ul>
         <p data-testid="instructions">{ data.strInstructions }</p>
+        {!isRecipeDone && (
+          <button className="start-btn" data-testid="start-recipe-btn">
+            Start Recipe
+          </button>
+        )}
       </>
     );
   } if (data) {
@@ -103,6 +117,11 @@ function RecipeDetails() {
           allowFullScreen
         />
         <p data-testid="instructions">{ data.strInstructions }</p>
+        {!isRecipeDone && (
+          <button className="start-btn" data-testid="start-recipe-btn">
+            Start Recipe
+          </button>
+        )}
       </>
     );
   }
