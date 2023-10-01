@@ -4,7 +4,7 @@ import GlobalContext from '../context/GlobalContext';
 function Recipes(): JSX.Element {
   const { dataApi } = useContext(GlobalContext);
 
-  const recipes = dataApi?.meals || dataApi?.drinks || [];
+  const recipes = dataApi?.meals || dataApi?.drinks;
 
   return (
     <div>
