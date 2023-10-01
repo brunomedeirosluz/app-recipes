@@ -33,6 +33,19 @@ export const fetchCategory = async () => {
   const data = await response.json();
   return data;
 };
+
+export const fetchRecipeDrink = async (id: string) => {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+  return data;
+};
+
+export const fetchRecipeMeal = async (id: string) => {
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+  return data;
+};
+
 // // Exemplo de uso para buscar ingredientes de drinks
 // const ingredient = 'gin';
 // const ingredientData = await fetchApi('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=', ingredient);
