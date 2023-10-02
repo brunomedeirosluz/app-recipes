@@ -96,6 +96,8 @@ export default function RecipeInProgress() {
       ))
 }
       </ul>
+      <p data-testid="instructions">{ strInstructions }</p>
+      <button data-testid="finish-recipe-btn">Finalizar Receita</button>
     </div>
   );
 }
