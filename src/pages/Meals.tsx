@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { fetchName, fetchCategory, fetchByCategoryMeal } from '../services/FetchAPI';
 import GlobalContext from '../context/GlobalContext';
 import Header from '../components/Header';
@@ -19,6 +20,7 @@ function Meals() {
   const [recipesMeals, setRecipesMeals] = useState<Recipe[]>([]);
   const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     const loadRecipes = async () => {
@@ -49,12 +51,15 @@ function Meals() {
   }, []);
 
   const handleCategoryClick = async (categoryName: string) => {
-    if (categoryName === 'all') {
+    if (categoryName === selectedCategory) {
       setDataApi({ meals: [], drinks: [] });
+      setSelectedCategory('all');
     } else {
       try {
         const response = await fetchByCategoryMeal(categoryName);
         setDataApi(response);
+        console.log(response);
+        setSelectedCategory(categoryName);
       } catch (error) {
         console.error('Erro ao carregar receitas filtradas:', error);
       }
@@ -83,16 +88,18 @@ function Meals() {
       </div>
       {dataApi.meals && dataApi.meals.length === 0
         && recipesMeals.map((recipe, index) => (
-          <div className="recipe-card" key={ recipe.idMeal }>
-            <div data-testid={ `${index}-recipe-card` }>
-              <img
-                src={ recipe.strMealThumb }
-                alt={ recipe.strMeal }
-                data-testid={ `${index}-card-img` }
-              />
-              <p data-testid={ `${index}-card-name` }>{recipe.strMeal}</p>
+          <Link key={ recipe.idMeal } to={ `/meals/${recipe.idMeal}` }>
+            <div className="recipe-card">
+              <div data-testid={ `${index}-recipe-card` }>
+                <img
+                  src={ recipe.strMealThumb }
+                  alt={ recipe.strMeal }
+                  data-testid={ `${index}-card-img` }
+                />
+                <p data-testid={ `${index}-card-name` }>{recipe.strMeal}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       {dataApi.meals && <Recipes />}
       <Footer />

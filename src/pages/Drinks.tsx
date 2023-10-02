@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { fetchNameDrinks, fetchCategoryDrinks,
   fetchByCategoryDrink } from '../services/FetchAPIDrinks';
 import GlobalContext from '../context/GlobalContext';
@@ -20,6 +21,7 @@ function Drinks() {
   const [recipesDrinks, setRecipesDrinks] = useState<RecipeDrinks[]>([]);
   const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     const loadRecipes = async () => {
@@ -50,12 +52,14 @@ function Drinks() {
   }, []);
 
   const handleCategoryClick = async (categoryName: string) => {
-    if (categoryName === 'all') {
+    if (categoryName === selectedCategory) {
       setDataApi({ meals: [], drinks: [] });
+      setSelectedCategory('all');
     } else {
       try {
         const response = await fetchByCategoryDrink(categoryName);
         setDataApi(response);
+        setSelectedCategory(categoryName);
       } catch (error) {
         console.error('Erro ao carregar receitas filtradas:', error);
       }
@@ -84,16 +88,18 @@ function Drinks() {
       </div>
       {dataApi.drinks && dataApi.drinks.length === 0
         && recipesDrinks.map((recipe, index) => (
-          <div className="recipe-card" key={ recipe.idDrink }>
-            <div data-testid={ `${index}-recipe-card` }>
-              <img
-                src={ recipe.strDrinkThumb }
-                alt={ recipe.strDrink }
-                data-testid={ `${index}-card-img` }
-              />
-              <p data-testid={ `${index}-card-name` }>{recipe.strDrink}</p>
+          <Link key={ recipe.idDrink } to={ `/drinks/${recipe.idDrink}` }>
+            <div className="recipe-card" key={ recipe.idDrink }>
+              <div data-testid={ `${index}-recipe-card` }>
+                <img
+                  src={ recipe.strDrinkThumb }
+                  alt={ recipe.strDrink }
+                  data-testid={ `${index}-card-img` }
+                />
+                <p data-testid={ `${index}-card-name` }>{recipe.strDrink}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       {dataApi.drinks && <Recipes />}
       <Footer />

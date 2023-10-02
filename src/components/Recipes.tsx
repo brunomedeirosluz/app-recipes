@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import GlobalContext from '../context/GlobalContext';
 
 function Recipes(): JSX.Element {
@@ -9,18 +10,27 @@ function Recipes(): JSX.Element {
   return (
     <div>
       {recipes.slice(0, 12).map((recipe, index) => (
-        <div
-          className="recipe-card"
-          key={ index }
-          data-testid={ `${index}-recipe-card` }
+        <Link
+          key={ (recipe.idMeal) ? recipe.idMeal : recipe.idDrink }
+          to={ (recipe.idMeal) ? `/meals/${recipe.idMeal}` : `/drinks/${recipe.idDrink}` }
         >
-          <img
-            src={ recipe.strMealThumb || recipe.strDrinkThumb }
-            alt={ `${recipe.strMeal || recipe.strDrink}-img` }
-            data-testid={ `${index}-card-img` }
-          />
-          <p data-testid={ `${index}-card-name` }>{recipe.strMeal || recipe.strDrink}</p>
-        </div>
+          <div
+            className="recipe-card"
+            key={ index }
+            data-testid={ `${index}-recipe-card` }
+          >
+            <img
+              src={ recipe.strMealThumb || recipe.strDrinkThumb }
+              alt={ `${recipe.strMeal || recipe.strDrink}-img` }
+              data-testid={ `${index}-card-img` }
+            />
+            <p
+              data-testid={ `${index}-card-name` }
+            >
+              {recipe.strMeal || recipe.strDrink}
+            </p>
+          </div>
+        </Link>
       ))}
     </div>
   );
