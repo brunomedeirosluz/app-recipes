@@ -1,5 +1,7 @@
+import RecipeInProgress from '../components/RecipeInProgress';
+
 export default function MealProgress() {
   return (
-    <h1>oi</h1>
+    <RecipeInProgress />
   );
 }
