@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { DoneRecipeType } from '../Type/type';
+import { DoneRecipesType } from '../Type/type';
 import shareIcon from '../images/shareIcon.svg';
 
 function DoneRecipes() {
-  const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType[]>([]);
+  const [doneRecipes, setDoneRecipes] = useState<DoneRecipesType[]>([]);
   const [copyIndex, setCopyIndex] = useState<number | null>(null);
   const [recipeFilter, setRecipeFilter] = useState('all');
 
