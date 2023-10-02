@@ -10,13 +10,16 @@ type Recipe = {
   strMeal: string;
   strMealThumb: string;
 };
+
 type Category = {
   strCategory: string;
 };
+
 function Meals() {
   const [recipesMeals, setRecipesMeals] = useState<Recipe[]>([]);
   const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
+
   useEffect(() => {
     const loadRecipes = async () => {
       try {
@@ -30,6 +33,7 @@ function Meals() {
     };
     loadRecipes();
   }, [dataApi]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -43,19 +47,20 @@ function Meals() {
     };
     fetchCategories();
   }, []);
+
   const handleCategoryClick = async (categoryName: string) => {
     if (categoryName === 'all') {
       setDataApi({ meals: [], drinks: [] });
     } else {
       try {
         const response = await fetchByCategoryMeal(categoryName);
-        console.log(response);
         setDataApi(response);
       } catch (error) {
         console.error('Erro ao carregar receitas filtradas:', error);
       }
     }
   };
+
   return (
     <div>
       <Header pageTitle="Meals" showSearchIcon />

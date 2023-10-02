@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
-import { fetchNameDrinks, fetchCategoryDrinks } from '../services/FetchAPIDrinks';
+import { fetchNameDrinks, fetchCategoryDrinks,
+  fetchByCategoryDrink } from '../services/FetchAPIDrinks';
 import GlobalContext from '../context/GlobalContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -17,7 +18,7 @@ type Category = {
 
 function Drinks() {
   const [recipesDrinks, setRecipesDrinks] = useState<RecipeDrinks[]>([]);
-  const { dataApi } = useContext(GlobalContext);
+  const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -48,6 +49,19 @@ function Drinks() {
     fetchCategories();
   }, []);
 
+  const handleCategoryClick = async (categoryName: string) => {
+    if (categoryName === 'all') {
+      setDataApi({ meals: [], drinks: [] });
+    } else {
+      try {
+        const response = await fetchByCategoryDrink(categoryName);
+        setDataApi(response);
+      } catch (error) {
+        console.error('Erro ao carregar receitas filtradas:', error);
+      }
+    }
+  };
+
   return (
     <div>
       <Header pageTitle="Drinks" showSearchIcon />
@@ -56,10 +70,17 @@ function Drinks() {
           <button
             key={ index }
             data-testid={ `${category.strCategory}-category-filter` }
+            onClick={ () => handleCategoryClick(category.strCategory) }
           >
             {category.strCategory}
           </button>
         ))}
+        <button
+          onClick={ () => handleCategoryClick('all') }
+          data-testid="All-category-filter"
+        >
+          All
+        </button>
       </div>
       {dataApi.drinks && dataApi.drinks.length === 0
         && recipesDrinks.map((recipe, index) => (
@@ -74,7 +95,7 @@ function Drinks() {
             </div>
           </div>
         ))}
-      {dataApi.drinks && dataApi.drinks.length !== 0 && <Recipes />}
+      {dataApi.drinks && <Recipes />}
       <Footer />
     </div>
   );
