@@ -43,7 +43,6 @@ export default function RecipeInProgress() {
   );
 
   const [copyMessage, setCopyMessage] = useState('');
-
   useEffect(() => {
     const fetchData = async () => {
       const apiUrl = location.pathname.includes('/meals/')
@@ -101,6 +100,10 @@ export default function RecipeInProgress() {
       console.error('Failed to copy link:', error);
     });
   };
+
+  useEffect(() => {
+    localStorage.setItem('inProgressRecipes', JSON.stringify(checkedIngredients));
+  }, [checkedIngredients]);
 
   const {
     strCategory,
