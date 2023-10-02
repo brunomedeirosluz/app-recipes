@@ -52,7 +52,7 @@ function Drinks() {
   }, []);
 
   const handleCategoryClick = async (categoryName: string) => {
-    if (categoryName === selectedCategory) {
+    if (categoryName === selectedCategory || categoryName === 'all') {
       setDataApi({ meals: [], drinks: [] });
       setSelectedCategory('all');
     } else {
