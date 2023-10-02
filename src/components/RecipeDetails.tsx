@@ -87,7 +87,10 @@ function RecipeDetails() {
     return (
       <>
         <h1 data-testid="recipe-title">{ data.strDrink }</h1>
-        <h3 data-testid="recipe-category">
+        <h3
+          className="recommended-cards"
+          data-testid="recipe-category"
+        >
           {`${data.strCategory} ${data.strAlcoholic}`}
         </h3>
         <img

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { DoneRecipeType } from '../Type/type';
+import { DoneRecipesType } from '../Type/type';
 import shareIcon from '../images/shareIcon.svg';
+import Header from '../components/Header';
 
 function DoneRecipes() {
-  const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType[]>([]);
+  const [doneRecipes, setDoneRecipes] = useState<DoneRecipesType[]>([]);
   const [copyIndex, setCopyIndex] = useState<number | null>(null);
   const [recipeFilter, setRecipeFilter] = useState('all');
 
@@ -35,6 +36,7 @@ function DoneRecipes() {
 
   return (
     <div>
+      <Header pageTitle="Done Recipes" showSearchIcon={ false } />
       <button
         data-testid="filter-by-all-btn"
         onClick={ () => setRecipeFilter('all') }
