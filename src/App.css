@@ -16,12 +16,22 @@
 }
 
 .footer {
-  background-color: #f0f0f0;
+  background-color: #41197f;
   bottom: 0;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+  padding: 8px;
   position: fixed;
   width: 100%;
+}
+
+.start-btn {
+  bottom: 0;
+  display: flex;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
 }
 
 .recipe-card {

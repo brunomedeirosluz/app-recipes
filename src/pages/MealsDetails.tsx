@@ -1,5 +1,7 @@
+import RecipeDetails from '../components/RecipeDetails';
+
 export default function MealsDetails() {
   return (
-    <h1>oi</h1>
+    <RecipeDetails />
   );
 }
