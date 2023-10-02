@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router';
-import { fetchRecipeDrink, fetchRecipeMeal } from '../services/FetchAPI';
-import { DoneRecipesType } from '../Type/type';
+import { fetchApi, fetchRecipeDrink, fetchRecipeMeal } from '../services/FetchAPI';
+import { DoneRecipesType, DrinkType, MealType } from '../Type/type';
+import '../App.css';
 
-function FilterIngredients(data) {
+function FilterIngredients(data: any) {
   const ingredients = Object.keys(data).reduce((acc, key) => {
     if (key.startsWith('strIngredient') && data[key]) {
       const ingredientNumber = key.replace('strIngredient', '');
@@ -21,10 +22,14 @@ function RecipeDetails() {
   const [data, setData] = useState<any>();
   const [isDrink, setIsDrink] = useState(false);
   const [isRecipeDone, setIsRecipeDone] = useState(false);
+  const [dataRecommended, setDataRecommended] = useState<DrinkType[] | MealType[]>([]);
   const { id } = useParams();
   const location = useLocation();
 
   const doneRecipesData = localStorage.getItem('doneRecipes');
+
+  const recommendedMealsAPI = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+  const recommendedDrinksAPI = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -53,8 +58,30 @@ function RecipeDetails() {
     fetchRecipe();
   }, [id, location, doneRecipesData]);
 
+  useEffect(() => {
+    const recommended = async () => {
+      const dataAPI = location.pathname === `/meals/${id}`
+        ? await fetchApi(recommendedDrinksAPI)
+        : await fetchApi(recommendedMealsAPI);
+
+      if (location.pathname === `/meals/${id}`) {
+        const { drinks } = dataAPI;
+        const result = drinks.slice(0, 6);
+        setDataRecommended(result);
+      }
+      if (location.pathname === `/drinks/${id}`) {
+        const { meals } = dataAPI;
+        const result = meals.slice(0, 6);
+        setDataRecommended(result);
+      }
+    };
+
+    recommended();
+  }, [id, location]);
+
   if (data && isDrink) {
     const filteredIngredients = FilterIngredients(data);
+
     return (
       <>
         <h1 data-testid="recipe-title">{ data.strDrink }</h1>
@@ -79,6 +106,30 @@ function RecipeDetails() {
             Start Recipe
           </button>
         )}
+        <div className="recommended-cards">
+          <h3>Recommended</h3>
+          <ul>
+            {
+            dataRecommended && dataRecommended.map((option, index) => (
+              <li key={ option.idDrink || option.idMeal }>
+                <div
+                  className="recommended-card"
+                  data-testid={ `${index}-recommendation-card` }
+                >
+                  <img
+                    src={ option.strDrinkThumb || option.strMealThumb }
+                    alt={ option.strDrink || option.strMeal }
+                  />
+                  <p data-testid={ `${index}-recommendation-title` }>
+                    { option.strDrink || option.strMeal}
+                  </p>
+                </div>
+
+              </li>
+            ))
+          }
+          </ul>
+        </div>
       </>
     );
   } if (data) {
@@ -122,6 +173,30 @@ function RecipeDetails() {
             Start Recipe
           </button>
         )}
+        <div className="recommended-cards">
+          <h3>Recommended</h3>
+          <ul>
+            {
+            dataRecommended && dataRecommended.map((option, index) => (
+              <li key={ option.idDrink || option.idMeal }>
+                <div
+                  className="recommended-card"
+                  data-testid={ `${index}-recommendation-card` }
+                >
+                  <img
+                    src={ option.strDrinkThumb || option.strMealThumb }
+                    alt={ option.strDrink || option.strMeal }
+                  />
+                  <p data-testid={ `${index}-recommendation-title` }>
+                    { option.strDrink || option.strMeal}
+                  </p>
+                </div>
+
+              </li>
+            ))
+          }
+          </ul>
+        </div>
       </>
     );
   }
