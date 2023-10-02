@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { fetchApi, fetchRecipeDrink, fetchRecipeMeal } from '../services/FetchAPI';
 import { DoneRecipesType, DrinkType, MealType } from '../Type/type';
 import '../App.css';
@@ -25,6 +26,7 @@ function RecipeDetails() {
   const [dataRecommended, setDataRecommended] = useState<DrinkType[] | MealType[]>([]);
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const doneRecipesData = localStorage.getItem('doneRecipes');
 
@@ -102,7 +104,11 @@ function RecipeDetails() {
         </ul>
         <p data-testid="instructions">{ data.strInstructions }</p>
         {!isRecipeDone && (
-          <button className="start-btn" data-testid="start-recipe-btn">
+          <button
+            className="start-btn"
+            data-testid="start-recipe-btn"
+            onClick={ () => navigate(`/drinks/${id}/in-progress`) }
+          >
             Start Recipe
           </button>
         )}
@@ -169,7 +175,11 @@ function RecipeDetails() {
         />
         <p data-testid="instructions">{ data.strInstructions }</p>
         {!isRecipeDone && (
-          <button className="start-btn" data-testid="start-recipe-btn">
+          <button
+            className="start-btn"
+            data-testid="start-recipe-btn"
+            onClick={ () => navigate(`/meals/${id}/in-progress`) }
+          >
             Start Recipe
           </button>
         )}

@@ -62,7 +62,6 @@ export default function RecipeInProgress() {
 
   useEffect(() => {
     startRecipe();
-    // filteredIngredients();
   }, []);
 
   return (
@@ -86,11 +85,11 @@ export default function RecipeInProgress() {
         <div key={ id }>
           <input type="checkbox" name="" id={ `{recipe.strIngredient1 ${index + 1}}` } />
           <label
-            htmlFor={ recipe.strIngredient1 }
+            htmlFor={ `{recipe.strIngredient1 ${index + 1}}` }
           >
-            { recipe.strMeasure1 }
+            { `{recipe.strIngredient1 ${index + 1}}` }
             {' '}
-            { recipe.strIngredient1 }
+            { `{recipe.strIngredient1 ${index + 1}}` }
 
           </label>
         </div>
@@ -103,3 +102,14 @@ export default function RecipeInProgress() {
 
 // O elemento de instruções deve ter o atributo data-testid="instructions".
 // O botão para finalizar a receita deve ter o atributo data-testid="finish-recipe-btn".
+
+// setIngredient();
+// .forEach((item: DrinkType[] | MealType[]) => {
+//   const items = {
+//     1: `${item.strIngredient1} ${item.strMeasure1}`,
+//     2: `${item.strIngredient2} ${item.strMeasure2}`,
+//     3: `${item.strIngredient3} ${item.strMeasure3}`,
+//     4: `${item.strIngredient4} ${item.strMeasure4}`,
+//   };
+//   return items;
+// }));

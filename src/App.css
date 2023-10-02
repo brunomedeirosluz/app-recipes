@@ -57,21 +57,6 @@
   margin-top: 7px;
 }
 
-.recommended-cards h3 {
-  margin-left: 30px;
-}
-
-.recommended-cards ul {
-  display: flex;
-  gap: 20px;
-  list-style: none;
-  overflow-x: scroll;
-}
-
-.recommended-card img {
-  height: 160px;
-}
-
 /*
 #iceLeft {
   animation: clink .8s infinite ease;
