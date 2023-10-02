@@ -57,21 +57,23 @@
   margin-top: 7px;
 }
 
-recommended-cards h3{
+.recommended-cards h3 {
   margin-left: 30px;
 }
-.recommended-cards ul{
+
+.recommended-cards ul {
   display: flex;
-  overflow-x: scroll;
   gap: 20px;
   list-style: none;
+  overflow-x: scroll;
 }
+
 .recommended-card img {
   height: 160px;
 }
 
 .line-through-text {
-  text-decoration: line-through solid rgb(0, 0, 0);
+  text-decoration: line-through solid black;
 }
 
 /*

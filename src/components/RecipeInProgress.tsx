@@ -44,35 +44,39 @@ export default function RecipeInProgress() {
 
   const [copyMessage, setCopyMessage] = useState('');
 
-  const fetchData = async () => {
-    const apiUrl = location.pathname.includes('/meals/')
-      ? `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-      : `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+  useEffect(() => {
+    const fetchData = async () => {
+      const apiUrl = location.pathname.includes('/meals/')
+        ? `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+        : `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
 
-    try {
-      const response = await fetchApi(apiUrl);
-      const { meals, drinks } = response;
+      try {
+        const response = await fetchApi(apiUrl);
+        const { meals, drinks } = response;
 
-      if (location.pathname.includes('/meals/') && meals) {
-        processRecipeData(meals[0]);
-      } else if (location.pathname.includes('/drinks/') && drinks) {
-        processRecipeData(drinks[0]);
+        if (location.pathname.includes('/meals/') && meals) {
+          processRecipeData(meals[0]);
+        } else if (location.pathname.includes('/drinks/') && drinks) {
+          processRecipeData(drinks[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch recipe data:', error);
       }
-    } catch (error) {
-      console.error('Failed to fetch recipe data:', error);
-    }
-  };
+    };
 
-  const processRecipeData = (recipeData: any) => {
-    const ingredients = [];
-    for (let i = 1; i <= 15; i++) {
-      const ingredientKey = `strIngredient${i}`;
-      if (recipeData[ingredientKey]) {
-        ingredients.push(recipeData[ingredientKey]);
+    const processRecipeData = (recipeData: any) => {
+      const ingredients = [];
+      for (let i = 1; i <= 15; i++) {
+        const ingredientKey = `strIngredient${i}`;
+        if (recipeData[ingredientKey]) {
+          ingredients.push(recipeData[ingredientKey]);
+        }
       }
-    }
-    setDataRecipeObj({ ...recipeData, ingredients });
-  };
+      setDataRecipeObj({ ...recipeData, ingredients });
+    };
+
+    fetchData();
+  }, [id, location.pathname]);
 
   const handleIngredientCheck = (ingredientItem: string) => {
     if (checkedIngredients.includes(ingredientItem)) {
@@ -97,14 +101,6 @@ export default function RecipeInProgress() {
       console.error('Failed to copy link:', error);
     });
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('inProgressRecipes', JSON.stringify(checkedIngredients));
-  }, [checkedIngredients]);
 
   const {
     strCategory,
