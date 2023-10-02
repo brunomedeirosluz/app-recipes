@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { fetchName, fetchCategory } from '../services/FetchAPI';
+import { fetchName, fetchCategory, fetchByCategoryMeal } from '../services/FetchAPI';
 import GlobalContext from '../context/GlobalContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -10,16 +10,13 @@ type Recipe = {
   strMeal: string;
   strMealThumb: string;
 };
-
 type Category = {
   strCategory: string;
 };
-
 function Meals() {
   const [recipesMeals, setRecipesMeals] = useState<Recipe[]>([]);
-  const { dataApi } = useContext(GlobalContext);
+  const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
-
   useEffect(() => {
     const loadRecipes = async () => {
       try {
@@ -33,7 +30,6 @@ function Meals() {
     };
     loadRecipes();
   }, [dataApi]);
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -47,7 +43,19 @@ function Meals() {
     };
     fetchCategories();
   }, []);
-
+  const handleCategoryClick = async (categoryName: string) => {
+    if (categoryName === 'all') {
+      setDataApi({ meals: [], drinks: [] });
+    } else {
+      try {
+        const response = await fetchByCategoryMeal(categoryName);
+        console.log(response);
+        setDataApi(response);
+      } catch (error) {
+        console.error('Erro ao carregar receitas filtradas:', error);
+      }
+    }
+  };
   return (
     <div>
       <Header pageTitle="Meals" showSearchIcon />
@@ -56,10 +64,17 @@ function Meals() {
           <button
             key={ index }
             data-testid={ `${category.strCategory}-category-filter` }
+            onClick={ () => handleCategoryClick(category.strCategory) }
           >
             {category.strCategory}
           </button>
         ))}
+        <button
+          onClick={ () => handleCategoryClick('all') }
+          data-testid="All-category-filter"
+        >
+          All
+        </button>
       </div>
       {dataApi.meals && dataApi.meals.length === 0
         && recipesMeals.map((recipe, index) => (
@@ -74,10 +89,9 @@ function Meals() {
             </div>
           </div>
         ))}
-      {dataApi.meals && dataApi.meals.length !== 1 && <Recipes />}
+      {dataApi.meals && <Recipes />}
       <Footer />
     </div>
   );
 }
-
 export default Meals;
