@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
-import { fetchName, fetchCategory } from '../services/FetchAPI';
+import { Link } from 'react-router-dom';
+import { fetchName, fetchCategory, fetchByCategoryMeal } from '../services/FetchAPI';
 import GlobalContext from '../context/GlobalContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -17,8 +18,9 @@ type Category = {
 
 function Meals() {
   const [recipesMeals, setRecipesMeals] = useState<Recipe[]>([]);
-  const { dataApi } = useContext(GlobalContext);
+  const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     const loadRecipes = async () => {
@@ -48,6 +50,24 @@ function Meals() {
     fetchCategories();
   }, []);
 
+  const handleCategoryClick = async (categoryName: string) => {
+    if (categoryName === selectedCategory || categoryName === 'all') {
+      console.log(selectedCategory);
+      console.log(categoryName);
+      setDataApi({ meals: [], drinks: [] });
+      setSelectedCategory('all');
+    } else {
+      try {
+        const response = await fetchByCategoryMeal(categoryName);
+        setDataApi(response);
+        console.log(response);
+        setSelectedCategory(categoryName);
+      } catch (error) {
+        console.error('Erro ao carregar receitas filtradas:', error);
+      }
+    }
+  };
+
   return (
     <div>
       <Header pageTitle="Meals" showSearchIcon />
@@ -56,28 +76,36 @@ function Meals() {
           <button
             key={ index }
             data-testid={ `${category.strCategory}-category-filter` }
+            onClick={ () => handleCategoryClick(category.strCategory) }
           >
             {category.strCategory}
           </button>
         ))}
+        <button
+          onClick={ () => handleCategoryClick('all') }
+          data-testid="All-category-filter"
+        >
+          All
+        </button>
       </div>
       {dataApi.meals && dataApi.meals.length === 0
         && recipesMeals.map((recipe, index) => (
-          <div className="recipe-card" key={ recipe.idMeal }>
-            <div data-testid={ `${index}-recipe-card` }>
-              <img
-                src={ recipe.strMealThumb }
-                alt={ recipe.strMeal }
-                data-testid={ `${index}-card-img` }
-              />
-              <p data-testid={ `${index}-card-name` }>{recipe.strMeal}</p>
+          <Link key={ recipe.idMeal } to={ `/meals/${recipe.idMeal}` }>
+            <div className="recipe-card">
+              <div data-testid={ `${index}-recipe-card` }>
+                <img
+                  src={ recipe.strMealThumb }
+                  alt={ recipe.strMeal }
+                  data-testid={ `${index}-card-img` }
+                />
+                <p data-testid={ `${index}-card-name` }>{recipe.strMeal}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
-      {dataApi.meals && dataApi.meals.length !== 1 && <Recipes />}
+      {dataApi.meals && <Recipes />}
       <Footer />
     </div>
   );
 }
-
 export default Meals;

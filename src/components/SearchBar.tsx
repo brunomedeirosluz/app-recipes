@@ -42,7 +42,6 @@ function SearchBar(): JSX.Element {
           break;
         case 'name':
           data = await fetchName(text);
-          console.log(data);
           break;
         default:
           break;
@@ -57,7 +56,6 @@ function SearchBar(): JSX.Element {
           break;
         case 'name':
           data = await fetchNameDrinks(text);
-          console.log(data);
           break;
         default:
           break;

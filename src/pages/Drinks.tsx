@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
-import { fetchNameDrinks, fetchCategoryDrinks } from '../services/FetchAPIDrinks';
+import { Link } from 'react-router-dom';
+import { fetchNameDrinks, fetchCategoryDrinks,
+  fetchByCategoryDrink } from '../services/FetchAPIDrinks';
 import GlobalContext from '../context/GlobalContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -17,8 +19,9 @@ type Category = {
 
 function Drinks() {
   const [recipesDrinks, setRecipesDrinks] = useState<RecipeDrinks[]>([]);
-  const { dataApi } = useContext(GlobalContext);
+  const { dataApi, setDataApi } = useContext(GlobalContext);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     const loadRecipes = async () => {
@@ -48,6 +51,21 @@ function Drinks() {
     fetchCategories();
   }, []);
 
+  const handleCategoryClick = async (categoryName: string) => {
+    if (categoryName === selectedCategory || categoryName === 'all') {
+      setDataApi({ meals: [], drinks: [] });
+      setSelectedCategory('all');
+    } else {
+      try {
+        const response = await fetchByCategoryDrink(categoryName);
+        setDataApi(response);
+        setSelectedCategory(categoryName);
+      } catch (error) {
+        console.error('Erro ao carregar receitas filtradas:', error);
+      }
+    }
+  };
+
   return (
     <div>
       <Header pageTitle="Drinks" showSearchIcon />
@@ -56,25 +74,34 @@ function Drinks() {
           <button
             key={ index }
             data-testid={ `${category.strCategory}-category-filter` }
+            onClick={ () => handleCategoryClick(category.strCategory) }
           >
             {category.strCategory}
           </button>
         ))}
+        <button
+          onClick={ () => handleCategoryClick('all') }
+          data-testid="All-category-filter"
+        >
+          All
+        </button>
       </div>
       {dataApi.drinks && dataApi.drinks.length === 0
         && recipesDrinks.map((recipe, index) => (
-          <div className="recipe-card" key={ recipe.idDrink }>
-            <div data-testid={ `${index}-recipe-card` }>
-              <img
-                src={ recipe.strDrinkThumb }
-                alt={ recipe.strDrink }
-                data-testid={ `${index}-card-img` }
-              />
-              <p data-testid={ `${index}-card-name` }>{recipe.strDrink}</p>
+          <Link key={ recipe.idDrink } to={ `/drinks/${recipe.idDrink}` }>
+            <div className="recipe-card" key={ recipe.idDrink }>
+              <div data-testid={ `${index}-recipe-card` }>
+                <img
+                  src={ recipe.strDrinkThumb }
+                  alt={ recipe.strDrink }
+                  data-testid={ `${index}-card-img` }
+                />
+                <p data-testid={ `${index}-card-name` }>{recipe.strDrink}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
-      {dataApi.drinks && dataApi.drinks.length !== 0 && <Recipes />}
+      {dataApi.drinks && <Recipes />}
       <Footer />
     </div>
   );
