@@ -4,43 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import { fetchApi, fetchRecipeMeal } from '../services/FetchAPI';
 import { fetchRecipeDrink } from '../services/FetchAPIDrinks';
 import { DoneRecipesType, DrinkType, MealType } from '../Type/type';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import shareIcon from '../images/shareIcon.svg';
+import { FilterIngredients } from './HandleDetails';
 import '../App.css';
-
-function FilterIngredients(data: any) {
-  const ingredients = Object.keys(data).reduce((acc, key) => {
-    if (key.startsWith('strIngredient') && data[key]) {
-      const ingredientNumber = key.replace('strIngredient', '');
-      const measureKey = `strMeasure${ingredientNumber}`;
-      const ingredient = data[key] as string;
-      const measure = data[measureKey] as string;
-      acc.push({ ingredient, measure });
-    }
-    return acc;
-  }, [] as { ingredient: string; measure: string | null }[]);
-  return ingredients;
-}
 
 function RecipeDetails() {
   const [data, setData] = useState<any>();
   const [isDrink, setIsDrink] = useState(false);
-  const [isRecipeDone, setIsRecipeDone] = useState(false);
+  const [recipeDone, setRecipeDone] = useState(false);
+  const [recipeInProgress, setRecipeInProgress] = useState(false);
   const [dataRecommended, setDataRecommended] = useState<DrinkType[] | MealType[]>([]);
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-
   const doneRecipesData = localStorage.getItem('doneRecipes');
-
+  const inProgressData = localStorage.getItem('inProgressRecipes');
   const recommendedMealsAPI = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const recommendedDrinksAPI = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
   useEffect(() => {
     const fetchRecipe = async () => {
-      if (doneRecipesData) {
-        const doneRecipes = JSON.parse(doneRecipesData);
-        const result = doneRecipes.some((obj: DoneRecipesType) => obj.id === id);
-        setIsRecipeDone(result);
-      }
       if (location.pathname.startsWith('/drinks/') && id) {
         try {
           setIsDrink(true);
@@ -57,34 +41,54 @@ function RecipeDetails() {
           console.error('Erro ao carregar a receita', error);
         }
       }
-    };
-    fetchRecipe();
-  }, [id, location, doneRecipesData]);
+    }; fetchRecipe();
+  }, [id, location, inProgressData, isDrink]);
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      if (inProgressData && id) {
+        try {
+          const parsedData = JSON.parse(inProgressData);
+          if (isDrink) {
+            const dataKeys = Object.keys(parsedData.drinks || {});
+            const result = dataKeys.includes(id);
+            setRecipeInProgress(result);
+          } else {
+            const dataKeys = Object.keys(parsedData.meals || {});
+            const result = dataKeys.includes(id);
+            setRecipeInProgress(result);
+          }
+        } catch (error) {
+          console.error('Erro ao analisar dados JSON:', error);
+        }
+      }
+    }; fetchRecipe();
+  }, [id, inProgressData, isDrink]);
 
   useEffect(() => {
     const recommended = async () => {
+      if (doneRecipesData) {
+        const doneRecipes = JSON.parse(doneRecipesData);
+        const result = doneRecipes.some((obj: DoneRecipesType) => obj.id === id);
+        setRecipeDone(result);
+      }
       const dataAPI = location.pathname === `/meals/${id}`
         ? await fetchApi(recommendedDrinksAPI)
         : await fetchApi(recommendedMealsAPI);
-
       if (location.pathname === `/meals/${id}`) {
         const { drinks } = dataAPI;
         const result = drinks.slice(0, 6);
         setDataRecommended(result);
-      }
-      if (location.pathname === `/drinks/${id}`) {
+      } if (location.pathname === `/drinks/${id}`) {
         const { meals } = dataAPI;
         const result = meals.slice(0, 6);
         setDataRecommended(result);
       }
-    };
-
-    recommended();
-  }, [id, location]);
+    }; recommended();
+  }, [id, location, doneRecipesData]);
 
   if (data && isDrink) {
     const filteredIngredients = FilterIngredients(data);
-
     return (
       <>
         <h1 data-testid="recipe-title">{ data.strDrink }</h1>
@@ -94,6 +98,12 @@ function RecipeDetails() {
         >
           {`${data.strCategory} ${data.strAlcoholic}`}
         </h3>
+        <button data-testid="favorite-btn">
+          <img src={ whiteHeartIcon } alt="white Heart Icon" />
+        </button>
+        <button data-testid="share-btn">
+          <img src={ shareIcon } alt="share Icon" />
+        </button>
         <img
           data-testid="recipe-photo"
           src={ data.strDrinkThumb }
@@ -107,15 +117,6 @@ function RecipeDetails() {
             </li>))}
         </ul>
         <p data-testid="instructions">{ data.strInstructions }</p>
-        {!isRecipeDone && (
-          <button
-            className="start-btn"
-            data-testid="start-recipe-btn"
-            onClick={ () => navigate(`/drinks/${id}/in-progress`) }
-          >
-            Start Recipe
-          </button>
-        )}
         <div className="recommended-cards">
           <h3>Recommended</h3>
           <ul>
@@ -139,6 +140,15 @@ function RecipeDetails() {
             ))
           }
           </ul>
+          {!recipeDone && (
+            <button
+              className="start-btn"
+              data-testid="start-recipe-btn"
+              onClick={ () => navigate(`/drinks/${id}/in-progress`) }
+            >
+              {(recipeInProgress) ? 'Continue Recipe' : 'Start Recipe'}
+            </button>
+          )}
         </div>
       </>
     );
@@ -149,6 +159,12 @@ function RecipeDetails() {
       <>
         <h1 data-testid="recipe-title">{ data.strMeal }</h1>
         <h3 data-testid="recipe-category">{ data.strCategory }</h3>
+        <button data-testid="favorite-btn">
+          <img src={ whiteHeartIcon } alt="white Heart Icon" />
+        </button>
+        <button data-testid="share-btn">
+          <img src={ shareIcon } alt="share Icon" />
+        </button>
         <img
           data-testid="recipe-photo"
           src={ data.strMealThumb }
@@ -161,6 +177,7 @@ function RecipeDetails() {
               { `${obj.measure} ${obj.ingredient}` }
             </li>))}
         </ul>
+        <p data-testid="instructions">{ data.strInstructions }</p>
         <iframe
           data-testid="video"
           width="560"
@@ -177,14 +194,13 @@ function RecipeDetails() {
           web-share"
           allowFullScreen
         />
-        <p data-testid="instructions">{ data.strInstructions }</p>
-        {!isRecipeDone && (
+        {!recipeDone && (
           <button
             className="start-btn"
             data-testid="start-recipe-btn"
             onClick={ () => navigate(`/meals/${id}/in-progress`) }
           >
-            Start Recipe
+            {(recipeInProgress) ? 'Continue Recipe' : 'Start Recipe'}
           </button>
         )}
         <div className="recommended-cards">
