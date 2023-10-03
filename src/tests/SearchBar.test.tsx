@@ -1,102 +1,260 @@
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import SearchBar from '../components/SearchBar';
+import * as APIModuleMeal from '../services/FetchAPI';
+import * as APIModuleDrink from '../services/FetchAPIDrinks';
+import { DrinkByFirstLetter, DrinkByIngredient, DrinkByName, MealByFirstLetter, MealByIngredient, MealByName } from './mocks/SearchMocks';
+import { renderWithRouter } from '../helps/renderWithRouter';
+import GlobalProvider from '../context/GlobalProvider';
 
-const SEARCH_INPUT = 'search-input';
-const EXEC_SEARCH_BTN = 'exec-search-btn';
-
-test('Renderiza os componentes de SearchBar', () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
+test('Teste se os componentes de SearchBar são renderizados na rota `/meals` ', () => {
+  renderWithRouter(
+    <GlobalProvider>
       <SearchBar />
-    </BrowserRouter>,
+    </GlobalProvider>,
+    { route: '/meals' },
   );
-  const searchInput = getByTestId(SEARCH_INPUT);
-  const ingredientRadio = getByTestId('ingredient-search-radio');
-  const nameRadio = getByTestId('name-search-radio');
-  const firstLetterRadio = getByTestId('first-letter-search-radio');
-  const execSearchBtn = getByTestId(EXEC_SEARCH_BTN);
+  const searchBar = screen.getByPlaceholderText(/search/i);
+  const ingredientRadio = screen.getByRole('radio', { name: /ingredient/i });
+  const nameRadio = screen.getByRole('radio', { name: /name/i });
+  const letterRadio = screen.getByRole('radio', { name: /first letter/i });
+  const execSearchBtn = screen.getByRole('button', { name: /search/i });
 
-  expect(searchInput).toBeInTheDocument();
+  expect(searchBar).toBeInTheDocument();
   expect(ingredientRadio).toBeInTheDocument();
   expect(nameRadio).toBeInTheDocument();
-  expect(firstLetterRadio).toBeInTheDocument();
+  expect(letterRadio).toBeInTheDocument();
   expect(execSearchBtn).toBeInTheDocument();
 });
 
-test('Executa uma pesquisa ao clicar no botão SEARCH', async () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
+test('Teste se os componentes de SearchBar são renderizados na rota `/drinks` ', () => {
+  renderWithRouter(
+    <GlobalProvider>
       <SearchBar />
-    </BrowserRouter>,
+    </GlobalProvider>,
+    { route: '/drinks' },
   );
+  const searchBar = screen.getByPlaceholderText(/search/i);
+  const ingredientRadio = screen.getByRole('radio', { name: /ingredient/i });
+  const nameRadio = screen.getByRole('radio', { name: /name/i });
+  const letterRadio = screen.getByRole('radio', { name: /first letter/i });
+  const execSearchBtn = screen.getByRole('button', { name: /search/i });
 
-  const searchInput = getByTestId(SEARCH_INPUT);
-  const execSearchBtn = getByTestId(EXEC_SEARCH_BTN);
+  expect(searchBar).toBeInTheDocument();
+  expect(ingredientRadio).toBeInTheDocument();
+  expect(nameRadio).toBeInTheDocument();
+  expect(letterRadio).toBeInTheDocument();
+  expect(execSearchBtn).toBeInTheDocument();
+});
 
-  fireEvent.change(searchInput, { target: { value: 'chicken' } });
-  fireEvent.click(execSearchBtn);
-  await waitFor(() => {
+describe('Teste a chamada e retorno das APIs na rota `/meals`', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+  test('Verifica se a pesquisa é executada corretamente ao selecionar "Ingredient" e inserir um valor válido', async () => {
+    const mockAPI = vi.spyOn(APIModuleMeal, 'fetchIngredient').mockResolvedValue(MealByIngredient);
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/meals' },
+    );
+
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const ingredientRadio = screen.getByRole('radio', { name: /ingredient/i });
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
+
+    expect(searchBar).toBeInTheDocument();
+    expect(ingredientRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
+
+    await userEvent.type(searchBar, 'tomato');
+    await userEvent.click(ingredientRadio);
+    await userEvent.click(execSearchBtn);
+
+    expect(mockAPI).toHaveBeenCalled();
+    expect(mockAPI).toHaveBeenCalledWith('tomato');
+  });
+
+  test('Verifica se a pesquisa é executada corretamente ao selecionar "Name" e inserir um valor válido', async () => {
+    const mockAPI = vi.spyOn(APIModuleMeal, 'fetchName').mockResolvedValue(MealByName);
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/meals' },
+    );
+
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const nameRadio = screen.getByRole('radio', { name: /name/i });
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
+
+    expect(searchBar).toBeInTheDocument();
+    expect(nameRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
+
+    await userEvent.type(searchBar, 'pizza');
+    await userEvent.click(nameRadio);
+    await userEvent.click(execSearchBtn);
+
+    expect(mockAPI).toHaveBeenCalled();
+    expect(mockAPI).toHaveBeenCalledWith('pizza');
+  });
+
+  test('Verifica se a pesquisa é executada corretamente ao selecionar "First letter" e inserir uma letra apenas', async () => {
+    const mockAPI = vi.spyOn(APIModuleMeal, 'fetchFirstLetter').mockResolvedValue(MealByFirstLetter);
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/meals' },
+    );
+
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const letterRadio = screen.getByRole('radio', { name: /first letter/i });
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
+
+    expect(searchBar).toBeInTheDocument();
+    expect(letterRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
+
+    await userEvent.type(searchBar, 'p');
+    await userEvent.click(letterRadio);
+    await userEvent.click(execSearchBtn);
+
+    expect(mockAPI).toHaveBeenCalled();
+    expect(mockAPI).toHaveBeenCalledWith('p');
+  });
+
+  test('Verifica se exibe um alerta ao selecionar "First letter" e inserir uma letra apenas', async () => {
+    vi.spyOn(APIModuleMeal, 'fetchFirstLetter').mockResolvedValue(MealByFirstLetter);
+    vi.spyOn(global, 'alert');
+
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/meals' },
+    );
+
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const letterRadio = screen.getByText(/first letter/i);
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
+
+    expect(searchBar).toBeInTheDocument();
+    expect(letterRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
+
+    await userEvent.type(searchBar, 'pizza');
+    await userEvent.click(letterRadio);
+    await userEvent.click(execSearchBtn);
+
+    expect(global.alert).toHaveBeenCalled();
   });
 });
-test('Seleciona a opção "Ingredient" e verifica se o valor do estado é atualizado corretamente', () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
-      <SearchBar />
-    </BrowserRouter>,
-  );
 
-  const ingredientRadio = getByTestId('ingredient-search-radio');
-  const searchInput = getByTestId(SEARCH_INPUT);
+describe('Teste a chamada e retorno das APIs na rota `/drinks`', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+  test('Verifica se a pesquisa é executada corretamente ao selecionar "Ingredient" e inserir um valor válido', async () => {
+    const mockAPI = vi.spyOn(APIModuleDrink, 'fetchIngredientDrinks').mockResolvedValue(DrinkByIngredient);
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/drinks' },
+    );
 
-  fireEvent.click(ingredientRadio);
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const ingredientRadio = screen.getByRole('radio', { name: /ingredient/i });
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
 
-  expect(searchInput).toHaveValue('');
-  expect(searchInput).toBeEnabled();
-  expect(searchInput).toBeInTheDocument();
-});
-test('Seleciona a opção "First letter" e verifica se o valor do estado é atualizado corretamente', () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
-      <SearchBar />
-    </BrowserRouter>,
-  );
+    expect(searchBar).toBeInTheDocument();
+    expect(ingredientRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
 
-  const firstLetterRadio = getByTestId('first-letter-search-radio');
-  const searchInput = getByTestId(SEARCH_INPUT);
+    await userEvent.type(searchBar, 'gin');
+    await userEvent.click(ingredientRadio);
+    await userEvent.click(execSearchBtn);
 
-  fireEvent.click(firstLetterRadio);
+    expect(mockAPI).toHaveBeenCalled();
+    expect(mockAPI).toHaveBeenCalledWith('gin');
+  });
+  test('Verifica se a pesquisa é executada corretamente ao selecionar "Name" e inserir um valor válido', async () => {
+    const mockAPI = vi.spyOn(APIModuleDrink, 'fetchNameDrinks').mockResolvedValue(DrinkByName);
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/drinks' },
+    );
 
-  expect(searchInput).toHaveValue('');
-  expect(searchInput).toBeEnabled();
-  expect(searchInput).toBeInTheDocument();
-});
-test('Verifica se a pesquisa não é executada ao clicar em "SEARCH" com campo de pesquisa vazio', async () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
-      <SearchBar />
-    </BrowserRouter>,
-  );
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const nameRadio = screen.getByRole('radio', { name: /name/i });
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
 
-  const execSearchBtn = getByTestId(EXEC_SEARCH_BTN);
+    expect(searchBar).toBeInTheDocument();
+    expect(nameRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
 
-  fireEvent.click(execSearchBtn);
-});
-test('Verifica se a pesquisa é executada corretamente ao selecionar "Name" e inserir um valor válido', async () => {
-  const { getByTestId } = render(
-    <BrowserRouter>
-      <SearchBar />
-    </BrowserRouter>,
-  );
+    await userEvent.type(searchBar, 'martini');
+    await userEvent.click(nameRadio);
+    await userEvent.click(execSearchBtn);
 
-  const nameRadio = getByTestId('name-search-radio');
-  const searchInput = getByTestId('search-input');
-  const execSearchBtn = getByTestId('exec-search-btn');
+    expect(mockAPI).toHaveBeenCalled();
+    expect(mockAPI).toHaveBeenCalledWith('martini');
+  });
 
-  fireEvent.click(nameRadio);
-  fireEvent.change(searchInput, { target: { value: 'Pizza' } });
-  fireEvent.click(execSearchBtn);
+  test('Verifica se a pesquisa é executada corretamente ao selecionar "First letter" e inserir uma letra apenas', async () => {
+    const mockAPI = vi.spyOn(APIModuleDrink, 'fetchFirstLetterDrinks').mockResolvedValue(DrinkByFirstLetter);
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/drinks' },
+    );
 
-  await waitFor(() => {
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const letterRadio = screen.getByRole('radio', { name: /first letter/i });
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
+
+    expect(searchBar).toBeInTheDocument();
+    expect(letterRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
+
+    await userEvent.type(searchBar, 'b');
+    await userEvent.click(letterRadio);
+    await userEvent.click(execSearchBtn);
+
+    expect(mockAPI).toHaveBeenCalled();
+    expect(mockAPI).toHaveBeenCalledWith('b');
+  });
+
+  test('Verifica se exibe um alerta ao selecionar "First letter" e inserir mais de uma letra', async () => {
+    vi.spyOn(APIModuleDrink, 'fetchFirstLetterDrinks').mockResolvedValue(DrinkByFirstLetter);
+    vi.spyOn(global, 'alert');
+
+    renderWithRouter(
+      <GlobalProvider>
+        <SearchBar />
+      </GlobalProvider>,
+      { route: '/drinks' },
+    );
+
+    const searchBar = screen.getByPlaceholderText(/search/i);
+    const letterRadio = screen.getByText(/first letter/i);
+    const execSearchBtn = screen.getByRole('button', { name: /search/i });
+
+    expect(searchBar).toBeInTheDocument();
+    expect(letterRadio).toBeInTheDocument();
+    expect(execSearchBtn).toBeInTheDocument();
+
+    await userEvent.type(searchBar, 'blue');
+    await userEvent.click(letterRadio);
+    await userEvent.click(execSearchBtn);
+
+    expect(global.alert).toHaveBeenCalled();
   });
 });
