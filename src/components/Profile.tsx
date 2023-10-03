@@ -1,39 +1,47 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileComponent() {
-  const storedData = localStorage.getItem('user');
+  const [user, setUser] = useState({ email: '' });
   const navigate = useNavigate();
+
+  const handleClickRecipes = () => {
+    navigate('/done-recipes');
+  };
+
+  const handleClickFavorite = () => {
+    navigate('/favorite-recipes');
+  };
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
 
-  let email = '';
-  if (storedData) {
-    try {
-      const parsedData = JSON.parse(storedData);
-      email = parsedData.email;
-    } catch (error) {
-      console.error('email not found');
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-  }
+  }, []);
 
   return (
     <section>
       <h3 data-testid="profile-email">
-        {email || 'Email not found'}
+        {user.email || 'Email not found'}
       </h3>
-      <Link to="/done-recipes">
-        <button data-testid="profile-done-btn">
-          Done Recipes
-        </button>
-      </Link>
-      <Link to="/favorite-recipes">
-        <button data-testid="profile-favorite-btn">
-          Favorite Recipes
-        </button>
-      </Link>
+      <button
+        onClick={ handleClickRecipes }
+        data-testid="profile-done-btn"
+      >
+        Done Recipes
+      </button>
+      <button
+        onClick={ handleClickFavorite }
+        data-testid="profile-favorite-btn"
+      >
+        Favorite Recipes
+      </button>
       <button
         data-testid="profile-logout-btn"
         onClick={ handleLogout }

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const INITIAL_LOGIN = {
+  email: '',
+  password: '',
+};
+
 export default function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState(INITIAL_LOGIN);
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
@@ -17,9 +19,9 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    localStorage.setItem('user', JSON.stringify({ email: formData.email }));
+  const handleSubmit = () => {
+    const { email } = formData;
+    localStorage.setItem('user', JSON.stringify({ email }));
     navigate('/meals');
   };
 
