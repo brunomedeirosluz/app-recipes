@@ -27,3 +27,9 @@ export const fetchByCategoryDrink = async (category: string) => {
   const data = await response.json();
   return data;
 };
+
+export const fetchRecipeDrink = async (id: string) => {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+  return data;
+};

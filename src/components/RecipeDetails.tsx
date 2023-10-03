@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import { fetchApi, fetchRecipeDrink, fetchRecipeMeal } from '../services/FetchAPI';
+import { fetchApi, fetchRecipeMeal } from '../services/FetchAPI';
+import { fetchRecipeDrink } from '../services/FetchAPIDrinks';
 import { DoneRecipesType, DrinkType, MealType } from '../Type/type';
 import '../App.css';
 

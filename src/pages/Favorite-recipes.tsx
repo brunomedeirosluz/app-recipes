@@ -42,7 +42,7 @@ export default function FavoriteRecipes() {
 
   return (
     <>
-      <Header pageTitle="favorite-recipes" />
+      <Header pageTitle="Favorite Recipes" showSearchIcon={ false } />
       <div className="favorite-recipes">
         <div className="filter-buttons">
           <button
