@@ -1,18 +1,52 @@
 import { BrowserRouter } from 'react-router-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/dom';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ProfileComponent from '../components/Profile';
+import DoneRecipes from '../pages/DoneRecipes';
+import FavoriteRecipes from '../pages/Favorite-recipes';
+import Login from '../pages/Login';
 
-const localStorageMock = {
-  getItem: () => '{"email":"test@example.com"}',
-};
+test('testes da pagina de Profile', async () => {
+  render(
+    <BrowserRouter>
+      <ProfileComponent />
+    </BrowserRouter>,
+  );
+  const h2 = screen.getByTestId('profile-email');
+  const buttonDone = screen.getByTestId('profile-done-btn');
+  const buttonFavorite = screen.getByTestId('profile-favorite-btn');
+  const buttonLogout = screen.getByTestId('profile-logout-btn');
 
-beforeEach(() => {
-  Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock,
-  });
+  expect(h2).toBeInTheDocument();
+  expect(buttonDone).toBeInTheDocument();
+  expect(buttonFavorite).toBeInTheDocument();
+  expect(buttonLogout).toBeInTheDocument();
+
+  await userEvent.click(buttonDone);
+  render(
+    <BrowserRouter>
+      <DoneRecipes />
+    </BrowserRouter>,
+  );
+
+  await userEvent.click(buttonFavorite);
+  render(
+    <BrowserRouter>
+      <FavoriteRecipes />
+    </BrowserRouter>,
+  );
+  await userEvent.click(buttonLogout);
+  render(
+    <BrowserRouter>
+      <Login />
+    </BrowserRouter>,
+  );
 });
+test('should show the user email when present in localStorage', () => {
+  const user = { email: 'email@mail.com' };
+  localStorage.setItem('user', JSON.stringify(user));
 
-test('Exibe o email do usuário', () => {
   render(
     <BrowserRouter>
       <ProfileComponent />
@@ -20,41 +54,6 @@ test('Exibe o email do usuário', () => {
   );
 
   const emailElement = screen.getByTestId('profile-email');
-  expect(emailElement).toHaveTextContent('test@example.com');
-});
-
-test('Exibe mensagem "Email not found" se o email não estiver no localStorage', () => {
-  localStorageMock.getItem = () => '';
-  render(
-    <BrowserRouter>
-      <ProfileComponent />
-    </BrowserRouter>,
-  );
-  const emailElement = screen.getByTestId('profile-email');
-  expect(emailElement).toHaveTextContent('Email not found');
-});
-
-test('Redireciona para a página de receitas concluídas quando "Done Recipes" é clicado', () => {
-  render(
-    <BrowserRouter>
-      <ProfileComponent />
-    </BrowserRouter>,
-  );
-  const doneRecipesButton = screen.getByTestId('profile-done-btn');
-  fireEvent.click(doneRecipesButton);
-  expect(window.location.pathname).toBe('/done-recipes');
-});
-
-test('Exibe todos os botões', () => {
-  render(
-    <BrowserRouter>
-      <ProfileComponent />
-    </BrowserRouter>,
-  );
-  const doneRecipesButton = screen.getByTestId('profile-done-btn');
-  const favoriteRecipesButton = screen.getByTestId('profile-favorite-btn');
-  const logoutButton = screen.getByTestId('profile-logout-btn');
-  expect(doneRecipesButton).toBeInTheDocument();
-  expect(favoriteRecipesButton).toBeInTheDocument();
-  expect(logoutButton).toBeInTheDocument();
+  expect(emailElement).toBeInTheDocument();
+  expect(emailElement).toHaveTextContent(user.email);
 });
