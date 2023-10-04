@@ -6,20 +6,22 @@ import { fetchRecipeDrink } from '../services/FetchAPIDrinks';
 import { DoneRecipesType, DrinkType, MealType } from '../Type/type';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
-import { FilterIngredients } from './HandleDetails';
-import '../App.css';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function RecipeDetails() {
-  const [data, setData] = useState<any>();
-  const [isDrink, setIsDrink] = useState(false);
-  const [recipeDone, setRecipeDone] = useState(false);
-  const [recipeInProgress, setRecipeInProgress] = useState(false);
-  const [dataRecommended, setDataRecommended] = useState<DrinkType[] | MealType[]>([]);
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const [data, setData] = useState<any>();
+  const [isDrink, setIsDrink] = useState(false);
+  const [copyMessage, setCopyMessage] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [recipeDone, setRecipeDone] = useState(false);
+  const [recipeInProgress, setRecipeInProgress] = useState(false);
+  const [dataRecommended, setDataRecommended] = useState<DrinkType[] | MealType[]>([]);
   const doneRecipesData = localStorage.getItem('doneRecipes');
   const inProgressData = localStorage.getItem('inProgressRecipes');
+  const favoriteRecipesData = localStorage.getItem('favoriteRecipes');
   const recommendedMealsAPI = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const recommendedDrinksAPI = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
@@ -29,6 +31,7 @@ function RecipeDetails() {
         try {
           setIsDrink(true);
           const response = await fetchRecipeDrink(id);
+          console.log(response);
           setData(response.drinks[0]);
         } catch (error) {
           console.error('Erro ao carregar a receita', error);
@@ -42,10 +45,10 @@ function RecipeDetails() {
         }
       }
     }; fetchRecipe();
-  }, [id, location, inProgressData, isDrink]);
+  }, [id, location]);
 
   useEffect(() => {
-    const fetchRecipe = async () => {
+    const handleInProgress = () => {
       if (inProgressData && id) {
         try {
           const parsedData = JSON.parse(inProgressData);
@@ -62,7 +65,7 @@ function RecipeDetails() {
           console.error('Erro ao analisar dados JSON:', error);
         }
       }
-    }; fetchRecipe();
+    }; handleInProgress();
   }, [id, inProgressData, isDrink]);
 
   useEffect(() => {
@@ -87,41 +90,116 @@ function RecipeDetails() {
     }; recommended();
   }, [id, location, doneRecipesData]);
 
-  if (data && isDrink) {
-    const filteredIngredients = FilterIngredients(data);
+  useEffect(() => {
+    const handleFavorite = () => {
+      const favoriteRecipes = (favoriteRecipesData) ? JSON.parse(favoriteRecipesData)
+        : [];
+      if (favoriteRecipes) {
+        const result = favoriteRecipes.some((obj: any) => obj.id === id);
+        setIsFavorite(result);
+      }
+    }; handleFavorite();
+  }, [id, favoriteRecipesData]);
+
+  const handleShareClick = () => {
+    const recipeLink = window.location.href.replace('/in-progress', '');
+    navigator.clipboard.writeText(recipeLink).then(() => {
+      setCopyMessage('Link copied!');
+      setTimeout(() => {
+        setCopyMessage('');
+      }, 1000);
+    }).catch((error) => {
+      console.error('Failed to copy link:', error);
+    });
+  };
+
+  const handleFavorite = () => {
+    const favoriteRecipes = (favoriteRecipesData) ? JSON.parse(favoriteRecipesData)
+      : [];
+    if (!isFavorite) {
+      favoriteRecipes.push({
+        id: (isDrink) ? data.idDrink : data.idMeal,
+        type: (isDrink) ? 'drink' : 'meal',
+        nationality: (isDrink) ? '' : data.strArea,
+        category: data.strCategory,
+        alcoholicOrNot: (isDrink) ? data.strAlcoholic : '',
+        name: (isDrink) ? data.strDrink : data.strMeal,
+        image: (isDrink) ? data.strDrinkThumb : data.strMealThumb,
+      });
+      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+      setIsFavorite(true);
+    } else {
+      const newFavorite = favoriteRecipes.filter((obj: any) => obj.id !== id);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
+      setIsFavorite(false);
+    }
+  };
+
+  const filterIngredients = () => {
+    const ingredients = Object.keys(data).reduce((acc, key) => {
+      if (key.startsWith('strIngredient') && data[key]) {
+        const ingredientNumber = key.replace('strIngredient', '');
+        const measureKey = `strMeasure${ingredientNumber}`;
+        const ingredient = data[key] as string;
+        const measure = data[measureKey] as string;
+        acc.push({ ingredient, measure });
+      }
+      return acc;
+    }, [] as { ingredient: string; measure: string | null }[]);
+    return ingredients;
+  };
+
+  if (data) {
+    const filteredIngredients = filterIngredients();
     return (
       <>
-        <h1 data-testid="recipe-title">{ data.strDrink }</h1>
-        <h3
-          className="recommended-cards"
-          data-testid="recipe-category"
-        >
-          {`${data.strCategory} ${data.strAlcoholic}`}
+        <h1 data-testid="recipe-title">{ data.strDrink || data.strMeal }</h1>
+        <h3 className="recommended-cards" data-testid="recipe-category">
+          {(isDrink) ? `${data.strCategory} ${data.strAlcoholic}` : `${data.strCategory}`}
         </h3>
-        <button data-testid="favorite-btn">
-          <img src={ whiteHeartIcon } alt="white Heart Icon" />
+        <button onClick={ handleFavorite }>
+          <img
+            data-testid="favorite-btn"
+            src={ (isFavorite) ? blackHeartIcon : whiteHeartIcon }
+            alt={ (isFavorite) ? 'Black Heart Icon' : 'White Heart Icon' }
+          />
         </button>
-        <button data-testid="share-btn">
+        <button data-testid="share-btn" onClick={ handleShareClick }>
           <img src={ shareIcon } alt="share Icon" />
+          {copyMessage && <div>{copyMessage}</div>}
         </button>
         <img
           data-testid="recipe-photo"
-          src={ data.strDrinkThumb }
+          src={ data.strDrinkThumb || data.strMealThumb }
           width="200"
-          alt={ data.strDrink }
+          alt={ data.strDrink || data.strMeal }
         />
         <ul>
           {filteredIngredients.map((obj, i) => (
             <li key={ i } data-testid={ `${i}-ingredient-name-and-measure` }>
-              {`${obj.measure} ${obj.ingredient}`}
+              {`${(obj.measure) ? obj.measure : ''} ${obj.ingredient}`}
             </li>))}
         </ul>
         <p data-testid="instructions">{ data.strInstructions }</p>
+        {!isDrink && (
+          <iframe
+            data-testid="video"
+            width="560"
+            height="315"
+            src={ data.strYoutube.replace('/watch?v=', '/embed/') }
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay;
+            clipboard-write;encrypted-media;gyroscope;
+            picture-in-picture;
+            web-share"
+            allowFullScreen
+          />
+        )}
         <div className="recommended-cards">
           <h3>Recommended</h3>
           <ul>
-            {
-            dataRecommended && dataRecommended.map((option, index) => (
+            {dataRecommended && dataRecommended.map((option, index) => (
               <li key={ option.idDrink || option.idMeal }>
                 <div
                   className="recommended-card"
@@ -135,97 +213,20 @@ function RecipeDetails() {
                     { option.strDrink || option.strMeal}
                   </p>
                 </div>
-
               </li>
-            ))
-          }
+            ))}
           </ul>
           {!recipeDone && (
             <button
               className="start-btn"
               data-testid="start-recipe-btn"
-              onClick={ () => navigate(`/drinks/${id}/in-progress`) }
+              onClick={
+                () => navigate(`/${(isDrink) ? 'drinks' : 'meals'}/${id}/in-progress`)
+              }
             >
               {(recipeInProgress) ? 'Continue Recipe' : 'Start Recipe'}
             </button>
           )}
-        </div>
-      </>
-    );
-  } if (data) {
-    const filteredIngredients = FilterIngredients(data);
-    const embedUrl = data.strYoutube.replace('/watch?v=', '/embed/');
-    return (
-      <>
-        <h1 data-testid="recipe-title">{ data.strMeal }</h1>
-        <h3 data-testid="recipe-category">{ data.strCategory }</h3>
-        <button data-testid="favorite-btn">
-          <img src={ whiteHeartIcon } alt="white Heart Icon" />
-        </button>
-        <button data-testid="share-btn">
-          <img src={ shareIcon } alt="share Icon" />
-        </button>
-        <img
-          data-testid="recipe-photo"
-          src={ data.strMealThumb }
-          width="200"
-          alt={ data.strMeal }
-        />
-        <ul>
-          {filteredIngredients.map((obj, i) => (
-            <li key={ i } data-testid={ `${i}-ingredient-name-and-measure` }>
-              { `${obj.measure} ${obj.ingredient}` }
-            </li>))}
-        </ul>
-        <p data-testid="instructions">{ data.strInstructions }</p>
-        <iframe
-          data-testid="video"
-          width="560"
-          height="315"
-          src={ embedUrl }
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer;
-          autoplay;
-          clipboard-write;
-          encrypted-media;
-          gyroscope;
-          picture-in-picture;
-          web-share"
-          allowFullScreen
-        />
-        {!recipeDone && (
-          <button
-            className="start-btn"
-            data-testid="start-recipe-btn"
-            onClick={ () => navigate(`/meals/${id}/in-progress`) }
-          >
-            {(recipeInProgress) ? 'Continue Recipe' : 'Start Recipe'}
-          </button>
-        )}
-        <div className="recommended-cards">
-          <h3>Recommended</h3>
-          <ul>
-            {
-            dataRecommended && dataRecommended.map((option, index) => (
-              <li key={ option.idDrink || option.idMeal }>
-                <div
-                  className="recommended-card"
-                  data-testid={ `${index}-recommendation-card` }
-                >
-                  <img
-                    src={ option.strDrinkThumb || option.strMealThumb }
-                    alt={ option.strDrink || option.strMeal }
-                  />
-                  <p data-testid={ `${index}-recommendation-title` }>
-                    { option.strDrink || option.strMeal}
-                  </p>
-                </div>
-
-              </li>
-            ))
-          }
-          </ul>
         </div>
       </>
     );
