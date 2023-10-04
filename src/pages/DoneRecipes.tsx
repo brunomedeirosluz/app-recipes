@@ -34,6 +34,8 @@ function DoneRecipes() {
       });
   };
 
+  console.log(JSON.parse(localStorage.getItem('doneRecipes') || '[]'));
+
   return (
     <div>
       <Header pageTitle="Done Recipes" showSearchIcon={ false } />
