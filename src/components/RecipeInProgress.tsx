@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchApi } from '../services/FetchAPI';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
 
 type DataRecipeObjTypes = {
@@ -11,9 +12,10 @@ type DataRecipeObjTypes = {
   strMealThumb: string;
   strDrinkThumb: string;
   strInstructions: string;
+  strArea: string;
+  strAlcoholic: string
   ingredients: string[];
 };
-
 const INITIAL_VALUE = {
   strCategory: '',
   strMeal: '',
@@ -21,6 +23,8 @@ const INITIAL_VALUE = {
   strMealThumb: '',
   strDrinkThumb: '',
   strInstructions: '',
+  strArea: '',
+  strAlcoholic: '',
   ingredients: [],
 };
 
@@ -41,8 +45,14 @@ export default function RecipeInProgress() {
         : [];
     },
   );
-
   const [copyMessage, setCopyMessage] = useState('');
+  const [isFavorited, setIsFavorited] = useState(false);
+  const navigate = useNavigate();
+
+  function handleNavigate() {
+    navigate('./done-recipes');
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const apiUrl = location.pathname.includes('/meals/')
@@ -112,8 +122,43 @@ export default function RecipeInProgress() {
     strMealThumb,
     strDrinkThumb,
     strInstructions,
+    strArea,
+    strAlcoholic,
     ingredients,
   } = dataRecipeObj;
+
+  const areAllIngredientsChecked = () => {
+    return ingredients.every((ingredientItem) => checkedIngredients
+      .includes(ingredientItem));
+  };
+
+  const handleFavoriteClick = () => {
+    const recipeType = location.pathname.includes('/meals/') ? 'meal' : 'drink';
+    const favoriteRecipe = {
+      id,
+      type: recipeType,
+      nationality: strArea || '',
+      category: strCategory || '',
+      alcoholicOrNot: strAlcoholic || '',
+      name: strMeal || strDrink,
+      image: strMealThumb || strDrinkThumb,
+    };
+
+    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+
+    if (isFavorited) {
+      const updatedFavorites = favorites.filter(
+        (favorite: any) => favorite.id !== id,
+      );
+      localStorage.setItem('favoriteRecipes', JSON.stringify(updatedFavorites));
+    } else {
+      localStorage.setItem(
+        'favoriteRecipes',
+        JSON.stringify([...favorites, favoriteRecipe]),
+      );
+    }
+    setIsFavorited(!isFavorited);
+  };
 
   return (
     <div>
@@ -125,8 +170,15 @@ export default function RecipeInProgress() {
         src={ strMealThumb || strDrinkThumb }
         alt={ strMeal || strDrink }
       />
-      <button data-testid="favorite-btn">
-        <img src={ whiteHeartIcon } alt="white Heart Icon" />
+      <button
+        data-testid="favorite-btn"
+        onClick={ handleFavoriteClick }
+      >
+        {isFavorited ? (
+          <img src={ blackHeartIcon } alt="black heart icon" />
+        ) : (
+          <img src={ whiteHeartIcon } alt="white heart icon" />
+        )}
       </button>
       <button data-testid="share-btn" onClick={ handleShareClick }>
         <img src={ shareIcon } alt="share Icon" />
@@ -152,7 +204,13 @@ export default function RecipeInProgress() {
         ))}
       </ul>
       <p data-testid="instructions">{strInstructions}</p>
-      <button data-testid="finish-recipe-btn">Finalizar Receita</button>
+      <button
+        data-testid="finish-recipe-btn"
+        disabled={ !areAllIngredientsChecked() }
+        onClick={ handleNavigate }
+      >
+        Finalizar Receita
+      </button>
     </div>
   );
 }
