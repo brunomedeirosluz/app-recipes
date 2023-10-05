@@ -31,7 +31,6 @@ function RecipeDetails() {
         try {
           setIsDrink(true);
           const response = await fetchRecipeDrink(id);
-          console.log(response);
           setData(response.drinks[0]);
         } catch (error) {
           console.error('Erro ao carregar a receita', error);

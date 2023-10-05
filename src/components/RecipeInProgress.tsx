@@ -31,6 +31,7 @@ const INITIAL_VALUE = {
 export default function RecipeInProgress() {
   const { id } = useParams();
   const location = useLocation();
+  const favoriteRecipesData = localStorage.getItem('favoriteRecipes');
 
   const [dataRecipeObj, setDataRecipeObj] = useState<DataRecipeObjTypes>(
     INITIAL_VALUE,
@@ -46,11 +47,29 @@ export default function RecipeInProgress() {
     },
   );
   const [copyMessage, setCopyMessage] = useState('');
+  const [data, setData] = useState<any>();
   const [isFavorited, setIsFavorited] = useState(false);
   const navigate = useNavigate();
 
   function handleNavigate() {
-    navigate('./done-recipes');
+    const doneRecipesData = localStorage.getItem('doneRecipes');
+    const doneRecipes = (doneRecipesData) ? JSON.parse(doneRecipesData)
+      : [];
+    const date = new Date();
+    const obj = {
+      id: data.idMeal || data.idDrink,
+      type: (data.strMeal) ? 'meal' : 'drink',
+      nationality: data.strArea || '',
+      category: data.strCategory || '',
+      alcoholicOrNot: data.strAlcoholic || '',
+      name: data.strMeal || data.strDrink,
+      image: data.strMealThumb || data.strDrinkThumb,
+      doneDate: date.toISOString(),
+      tags: (data.strTags) ? data.strTags.split(',') : [],
+    };
+    doneRecipes.push(obj);
+    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
+    navigate('/done-recipes');
   }
 
   useEffect(() => {
@@ -64,8 +83,11 @@ export default function RecipeInProgress() {
         const { meals, drinks } = response;
 
         if (location.pathname.includes('/meals/') && meals) {
+          setData(meals[0]);
+          console.log(meals[0]);
           processRecipeData(meals[0]);
         } else if (location.pathname.includes('/drinks/') && drinks) {
+          setData(drinks[0]);
           processRecipeData(drinks[0]);
         }
       } catch (error) {
@@ -86,6 +108,17 @@ export default function RecipeInProgress() {
 
     fetchData();
   }, [id, location.pathname]);
+
+  useEffect(() => {
+    const handleFavorite = () => {
+      const favoriteRecipes = (favoriteRecipesData) ? JSON.parse(favoriteRecipesData)
+        : [];
+      if (favoriteRecipes) {
+        const result = favoriteRecipes.some((obj: any) => obj.id === id);
+        setIsFavorited(result);
+      }
+    }; handleFavorite();
+  }, [id, favoriteRecipesData]);
 
   const handleIngredientCheck = (ingredientItem: string) => {
     if (checkedIngredients.includes(ingredientItem)) {
@@ -122,8 +155,6 @@ export default function RecipeInProgress() {
     strMealThumb,
     strDrinkThumb,
     strInstructions,
-    strArea,
-    strAlcoholic,
     ingredients,
   } = dataRecipeObj;
 
@@ -132,38 +163,34 @@ export default function RecipeInProgress() {
       .includes(ingredientItem));
   };
 
-  const handleFavoriteClick = () => {
-    const recipeType = location.pathname.includes('/meals/') ? 'meal' : 'drink';
-    const favoriteRecipe = {
-      id,
-      type: recipeType,
-      nationality: strArea || '',
-      category: strCategory || '',
-      alcoholicOrNot: strAlcoholic || '',
-      name: strMeal || strDrink,
-      image: strMealThumb || strDrinkThumb,
-    };
-
-    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-
-    if (isFavorited) {
-      const updatedFavorites = favorites.filter(
-        (favorite: any) => favorite.id !== id,
-      );
-      localStorage.setItem('favoriteRecipes', JSON.stringify(updatedFavorites));
+  const handleFavorite = () => {
+    const favoriteRecipes = (favoriteRecipesData) ? JSON.parse(favoriteRecipesData)
+      : [];
+    if (!isFavorited) {
+      favoriteRecipes.push({
+        id: data.idDrink || data.idMeal,
+        type: (data.idDrink) ? 'drink' : 'meal',
+        nationality: data.strArea || '',
+        category: data.strCategory,
+        alcoholicOrNot: data.strAlcoholic || '',
+        name: data.strDrink || data.strMeal,
+        image: data.strDrinkThumb || data.strMealThumb,
+      });
+      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+      setIsFavorited(true);
+      console.log(favoriteRecipes);
     } else {
-      localStorage.setItem(
-        'favoriteRecipes',
-        JSON.stringify([...favorites, favoriteRecipe]),
-      );
+      const newFavorite = favoriteRecipes.filter((obj: any) => obj.id !== id);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
+      setIsFavorited(false);
+      console.log(newFavorite);
     }
-    setIsFavorited(!isFavorited);
   };
 
   return (
     <div>
-      <p data-testid="recipe-category">{strCategory}</p>
       <h1 data-testid="recipe-title">{strMeal || strDrink}</h1>
+      <h3 data-testid="recipe-category">{strCategory}</h3>
       <img
         className="recipe-card"
         data-testid="recipe-photo"
@@ -171,13 +198,12 @@ export default function RecipeInProgress() {
         alt={ strMeal || strDrink }
       />
       <button
-        data-testid="favorite-btn"
-        onClick={ handleFavoriteClick }
+        onClick={ handleFavorite }
       >
         {isFavorited ? (
-          <img src={ blackHeartIcon } alt="black heart icon" />
+          <img data-testid="favorite-btn" src={ blackHeartIcon } alt="black heart icon" />
         ) : (
-          <img src={ whiteHeartIcon } alt="white heart icon" />
+          <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="white heart icon" />
         )}
       </button>
       <button data-testid="share-btn" onClick={ handleShareClick }>
