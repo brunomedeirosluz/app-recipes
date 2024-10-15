@@ -27,7 +27,7 @@ O sistema permite visualizar, buscar, filtrar, favoritar, compartilhar e acompan
 O projeto foi desenvolvido para ser 100% responsivo, adaptando-se a diferentes tamanhos de tela.
 
 ### Visualização Mobile:
-![Versão Mobile](https://exemplo.com/caminho-da-imagem-mobile)
+![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/2c3e9918c6bf6fd94967f530e996e8dac57735e0/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.44.13.png)
 
 ### Visualização em Notebook:
 ![Versão Notebook](https://exemplo.com/caminho-da-imagem-notebook)
