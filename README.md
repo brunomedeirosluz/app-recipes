@@ -28,6 +28,7 @@ O projeto foi desenvolvido para ser 100% responsivo, adaptando-se a diferentes t
 
 ### Visualização Mobile:
 ![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/2c3e9918c6bf6fd94967f530e996e8dac57735e0/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.44.13.png)
+![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/c35f0dc2252076ff5b69b16cd3487aa722c058af/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.45.06.png)
 
 ### Visualização em Notebook:
 ![Versão Notebook](https://exemplo.com/caminho-da-imagem-notebook)
