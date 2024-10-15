@@ -1,4 +1,4 @@
-# APP RECIPES
+# Sistema de Receitas e Drinks
 
 Este projeto foi desenvolvido como parte do curso da Trybe e em colaboração com outros membros do grupo. Utilizamos o Trello como ferramenta Kanban para gerenciar as tarefas.
 
@@ -21,6 +21,16 @@ O sistema permite visualizar, buscar, filtrar, favoritar, compartilhar e acompan
 - Tela de perfil (/profile)
 - Tela de receitas feitas (/done-recipes)
 - Tela de receitas favoritas (/favorite-recipes)
+
+## Responsividade
+
+O projeto foi desenvolvido para ser 100% responsivo, adaptando-se a diferentes tamanhos de tela.
+
+### Visualização Mobile:
+![Versão Mobile](https://exemplo.com/caminho-da-imagem-mobile)
+
+### Visualização em Notebook:
+![Versão Notebook](https://exemplo.com/caminho-da-imagem-notebook)
 
 ## APIs Utilizadas
 
@@ -52,6 +62,12 @@ Endpoints importantes:
 1. Clone este repositório.
 2. Instale as dependências com `npm install`.
 3. Execute o projeto com `npm start`.
+
+## Autoria
+
+Este projeto foi desenvolvido por um grupo de alunos da Trybe como parte do curso de desenvolvimento web.
+
+
 
 ## Autoria
 
