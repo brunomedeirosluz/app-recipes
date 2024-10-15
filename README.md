@@ -56,6 +56,8 @@ Endpoints importantes:
 - Utilização da Context API do React para gerenciamento de estado.
 - Utilização dos React Hooks useState, useContext, useEffect.
 - Criação de Hooks customizados.
+- Utilização do Bootstrap para a estilização do projeto.
+- Testes unitários realizados com Vitest.
 - Projeto 100% responsivo.
 
 ## Instruções de Instalação e Execução
