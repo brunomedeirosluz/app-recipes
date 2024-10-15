@@ -1,4 +1,4 @@
-# Sistema de Receitas e Drinks
+# Recipes App
 
 Este projeto foi desenvolvido como parte do curso da Trybe e em colaboração com outros membros do grupo. Utilizamos o Trello como ferramenta Kanban para gerenciar as tarefas.
 
@@ -67,10 +67,3 @@ Endpoints importantes:
 ## Autoria
 
 Este projeto foi desenvolvido por um grupo de alunos da Trybe como parte do curso de desenvolvimento web.
-
-
-
-## Autoria
-
-Este projeto foi desenvolvido por um grupo de alunos da Trybe como parte do curso de desenvolvimento web.
-
