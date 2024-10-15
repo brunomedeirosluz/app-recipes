@@ -1,0 +1,24 @@
+.recipe-card {
+  background-color: #ffffff; /* Cor de fundo do card */
+  border-radius: 8px; /* Arredondamento dos cantos */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra do card */
+  padding: 15px; /* Espaçamento interno */
+  transition: transform 0.2s; /* Transição suave ao passar o mouse */
+}
+
+.recipe-card:hover {
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+img {
+  max-width: 100%; /* Faz com que a imagem ocupe o máximo da largura do card */
+  border-radius: 8px; /* Arredondamento das imagens */
+}
+
+.category-buttons .btn {
+  margin-right: 10px; /* Espaçamento entre os botões */
+}
+
+.category-buttons {
+  justify-content: center; /* Centraliza os ícones */
+}

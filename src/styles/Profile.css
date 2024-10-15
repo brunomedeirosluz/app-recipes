@@ -1,0 +1,22 @@
+/* Se desejar personalizar ainda mais o estilo */
+.section {
+  background-color: #f7f7f7; /* Fundo claro para destacar o conteúdo */
+}
+
+h3 {
+  color: #41197f; /* Cor do texto roxo */
+}
+
+.btn-warning {
+  background-color: #fcc436; /* Cor de fundo amarela */
+  color: #41197f; /* Cor do texto roxo */
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Cor vermelha para o botão de logout */
+  color: white; /* Texto branco para o botão de logout */
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* Escurece o botão de logout ao passar o mouse */
+}

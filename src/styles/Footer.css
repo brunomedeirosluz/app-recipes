@@ -1,0 +1,9 @@
+/* Estilos do footer */
+.footer {
+  background-color: #41197f;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+}

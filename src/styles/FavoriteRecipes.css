@@ -1,0 +1,36 @@
+.favorite-recipes {
+  background-color: #f8f9fa; /* Cor de fundo leve */
+  padding: 20px; /* Espaçamento interno */
+}
+
+.filter-buttons .btn {
+  padding: 10px 20px; /* Tamanho dos botões */
+}
+
+.recipe-card {
+  background-color: #ffffff; /* Cor de fundo do card */
+  border-radius: 8px; /* Arredondamento dos cantos */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra do card */
+  padding: 15px; /* Espaçamento interno */
+  transition: transform 0.2s; /* Transição suave ao passar o mouse */
+  text-align: center; /* Centraliza o texto dentro do card */
+}
+
+.recipe-card:hover {
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+.recipe-info {
+  margin-top: 10px; /* Espaçamento acima da seção de informações */
+}
+
+img {
+  max-width: 100%; /* Faz a imagem ocupar o máximo da largura do card */
+  border-radius: 8px; /* Arredondamento das imagens */
+}
+
+.recipe-info button {
+  background: none; /* Remove o fundo do botão */
+  border: none; /* Remove a borda do botão */
+  cursor: pointer; /* Muda o cursor ao passar o mouse */
+}

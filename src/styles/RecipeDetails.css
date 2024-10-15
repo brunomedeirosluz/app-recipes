@@ -1,0 +1,41 @@
+.recommended-card {
+  background-color: #ffffff; /* Cor de fundo do card */
+  border: 1px solid #ddd; /* Borda do card */
+  border-radius: 8px; /* Arredondamento das bordas */
+  padding: 10px; /* Padding interno do card */
+  text-align: center; /* Centraliza o texto no card */
+  transition: transform 0.2s; /* Transição suave ao passar o mouse */
+}
+
+.recommended-card:hover {
+  transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+.video-container {
+  position: relative; /* Necessário para responsividade do iframe */
+  overflow: hidden;
+  padding-top: 56.25%; /* Proporção 16:9 */
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.start-btn {
+  width: 100%; /* Botão ocupa toda a largura */
+  background-color: #007bff; /* Cor do botão */
+  color: #fff; /* Cor do texto do botão */
+}
+
+.border-dark {
+  border: 1px solid black; /* Borda preta */
+  border-radius: 10px;
+}
+
+.p-3 {
+  padding: 3rem; /* Preenchimento interno */
+}

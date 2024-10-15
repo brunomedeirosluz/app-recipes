@@ -1,0 +1,59 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+/* Container de login */
+.login-container {
+  background-color: #41197f; /* Fundo roxo */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilização do logo */
+.logo-img {
+  max-width: 200px; /* Tamanho máximo da imagem do logo */
+  height: auto;
+}
+
+/* Estilização do formulário */
+.login-form {
+  background-color: #fff;
+  max-width: 360px;
+  border-radius: 8px;
+  width: 90%;
+}
+
+/* Estilização dos inputs */
+.login-input {
+  border: 2px solid #fcc436;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-input::placeholder {
+  color: #999;
+}
+
+/* Botão de login */
+button[type="submit"] {
+  background-color: #fcc436;
+  color: #41197f;
+  border: none;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:disabled {
+  background-color: #ccc; /* Botão desativado */
+  color: #666;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background-color: #e5b824; /* Amarelo mais escuro no hover */
+}

@@ -1,0 +1,78 @@
+/* Container do header */
+.header-container {
+  background-color: #41197f; /* Fundo roxo */
+  padding: 10px;
+  border-bottom: 2px solid #fcc436; /* Borda inferior amarela */
+}
+
+/* Ícone de perfil */
+.profile-icon {
+  width: 30px; /* Define o tamanho do ícone */
+  height: auto;
+}
+
+/* Título da página */
+.page-title {
+  color: #fcc436; /* Cor amarela para o título */
+  font-size: 24px;
+  margin: 0;
+  text-align: end; /* Centraliza o texto */
+}
+
+/* Ícone de busca */
+.search-icon {
+  width: 30px; /* Tamanho do ícone */
+  height: auto; /* Altura automática */
+  margin-left: 10px; /* Espaçamento à esquerda do ícone */
+  cursor: pointer; /* Cursor como ponteiro para indicar que é clicável */
+}
+
+/* Estilizando a barra de busca */
+.search-bar {
+  margin-top: 10px;
+}
+
+/* Estilos para o formulário de busca */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #41197f; /* Fundo roxo */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para o campo de entrada de busca */
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px 0 0 5px;
+  color: #41197f; /* Texto roxo */
+}
+
+/* Estilos para o botão de busca */
+.search-button {
+  border: none;
+  color: #41197f; /* Texto roxo */
+  padding: 10px 20px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+/* Estilos para as opções de rádio */
+.radio-options {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.form-check-input {
+  margin-right: 5px;
+}
+
+.form-check-label {
+  color: #fcc436; /* Texto amarelo */
+  margin-right: 15px;
+}

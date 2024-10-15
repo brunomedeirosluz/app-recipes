@@ -1,0 +1,49 @@
+/* Estilizando a barra de busca */
+.search-bar {
+  margin-top: 10px;
+}
+
+/* Estilos para o formulário de busca */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #41197f; /* Fundo roxo */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para o campo de entrada de busca */
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px 0 0 5px;
+  color: #41197f; /* Texto roxo */
+}
+
+/* Estilos para o botão de busca */
+.search-button {
+  border: none;
+  color: #41197f; /* Texto roxo */
+  padding: 10px 20px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+/* Estilos para as opções de rádio */
+.radio-options {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.form-check-input {
+  margin-right: 5px;
+}
+
+.form-check-label {
+  color: #fcc436; /* Texto amarelo */
+  margin-right: 15px;
+}
