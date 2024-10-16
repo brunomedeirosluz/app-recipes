@@ -11,7 +11,7 @@ function Footer() {
           <Col xs={6} md={4} className="text-center">
             <Link to="/drinks">
               <img
-                src="src/images/icone-drink.png"
+                src="src/icone-drink.png"
                 data-testid="drinks-bottom-btn"
                 alt="Ícone de Bebida"
                 className="footer-icon"
@@ -21,7 +21,7 @@ function Footer() {
           <Col xs={6} md={4} className="text-center">
             <Link to="/meals">
               <img
-                src="src/images/icone-prato.png"
+                src="src/icone-prato.png"
                 data-testid="meals-bottom-btn"
                 alt="Ícone de Talheres"
                 className="footer-icon"

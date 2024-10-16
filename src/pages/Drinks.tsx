@@ -99,7 +99,7 @@ function Drinks() {
               data-testid={`${category.strCategory}-category-filter`}
               style={{ cursor: "pointer" }}>
               <img
-                src={`src/images/${category.strCategory}.png`}
+                src={`src/${category.strCategory}.png`}
                 alt={category.strCategory}
                 className="category-icon"
               />

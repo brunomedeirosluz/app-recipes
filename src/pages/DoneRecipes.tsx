@@ -87,7 +87,7 @@ function DoneRecipes() {
                   onClick={() => handleCopyLink(recipe.id, recipe.type, index)}
                   className="btn p-0">
                   <img
-                    src="src/images/Share.png"
+                    src="src/Share.png"
                     alt="Share"
                     data-testid={`${index}-horizontal-share-btn`}
                   />

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchApi } from "../services/FetchAPI";
-import whiteHeartIcon from "../images/whiteHeartIcon.svg";
-import blackHeartIcon from "../images/blackHeartIcon.svg";
-import shareIcon from "../images/shareIcon.svg";
+import whiteHeartIcon from "../whiteHeartIcon.svg";
+import blackHeartIcon from "../blackHeartIcon.svg";
+import shareIcon from "../shareIcon.svg";
 import { Button, Container, ListGroup } from "react-bootstrap";
 import "../styles/RecipeInProgress.css";
 

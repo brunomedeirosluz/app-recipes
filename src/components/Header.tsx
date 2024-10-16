@@ -22,7 +22,7 @@ function Header({ pageTitle, showSearchIcon = true }: HeaderProps) {
         {/* Link para o perfil */}
         <Link to="/profile" className="navbar-brand mt-5">
           <img
-            src="src/images/profileIcon.svg"
+            src="src/profileIcon.svg"
             alt="Profile"
             data-testid="profile-top-btn"
             className="profile-icon"
@@ -39,7 +39,7 @@ function Header({ pageTitle, showSearchIcon = true }: HeaderProps) {
         {showSearchIcon && (
           <>
             <img
-              src="src/images/searchIcon.svg"
+              src="src/searchIcon.svg"
               alt="Search"
               data-testid="search-top-btn"
               className="search-icon mt-5"

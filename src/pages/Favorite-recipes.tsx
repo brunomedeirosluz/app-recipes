@@ -55,21 +55,21 @@ export default function FavoriteRecipes() {
             style={{ cursor: "pointer" }}
             className="mx-2"
             data-testid="filter-by-all-btn">
-            <img src="src/images/all-2.png" alt="logo-all-foods" />
+            <img src="src/all-2.png" alt="logo-all-foods" />
           </a>
           <a
             onClick={() => handleFilterChange("meal")}
             style={{ cursor: "pointer" }}
             className="mx-2"
             data-testid="filter-by-meal-btn">
-            <img src="src/images/foods.png" alt="logo-food" />
+            <img src="src/foods.png" alt="logo-food" />
           </a>
           <a
             onClick={() => handleFilterChange("drink")}
             style={{ cursor: "pointer" }}
             className="mx-2"
             data-testid="filter-by-drink-btn">
-            <img src="src/images/drinks.png" alt="logo-food" />
+            <img src="src/drinks.png" alt="logo-food" />
           </a>
         </div>
 
@@ -108,7 +108,7 @@ export default function FavoriteRecipes() {
                       onClick={() => handleRemoveFavorite(recipe.id)}>
                       <img
                         data-testid={`${index}-horizontal-favorite-btn`}
-                        src="src/images/heart.png"
+                        src="src/heart.png"
                         alt="Favorite"
                         style={{ width: "20px", cursor: "pointer" }}
                       />
@@ -121,7 +121,7 @@ export default function FavoriteRecipes() {
                       }>
                       <img
                         data-testid={`${index}-horizontal-share-btn`}
-                        src="src/images/Share.png"
+                        src="src/Share.png"
                         alt="Share"
                         style={{ width: "20px", cursor: "pointer" }}
                       />
