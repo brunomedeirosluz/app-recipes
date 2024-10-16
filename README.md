@@ -1,4 +1,4 @@
-# APP RECIPES
+# Recipes App
 
 Este projeto foi desenvolvido como parte do curso da Trybe e em colaboração com outros membros do grupo. Utilizamos o Trello como ferramenta Kanban para gerenciar as tarefas.
 
@@ -21,6 +21,17 @@ O sistema permite visualizar, buscar, filtrar, favoritar, compartilhar e acompan
 - Tela de perfil (/profile)
 - Tela de receitas feitas (/done-recipes)
 - Tela de receitas favoritas (/favorite-recipes)
+
+## Responsividade
+
+O projeto foi desenvolvido para ser 100% responsivo, adaptando-se a diferentes tamanhos de tela.
+
+### Visualização Mobile:
+![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/2c3e9918c6bf6fd94967f530e996e8dac57735e0/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.44.13.png)
+![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/c35f0dc2252076ff5b69b16cd3487aa722c058af/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.45.06.png)
+
+### Visualização em Notebook:
+![Versão Notebook](https://github.com/brunomedeirosluz/app-recipes/blob/053372bc31612fed3ef3a640ff29114b60589d35/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.45.33.png)
 
 ## APIs Utilizadas
 
@@ -45,6 +56,8 @@ Endpoints importantes:
 - Utilização da Context API do React para gerenciamento de estado.
 - Utilização dos React Hooks useState, useContext, useEffect.
 - Criação de Hooks customizados.
+- Utilização do Bootstrap para a estilização do projeto.
+- Testes unitários realizados com Vitest.
 - Projeto 100% responsivo.
 
 ## Instruções de Instalação e Execução
@@ -56,4 +69,3 @@ Endpoints importantes:
 ## Autoria
 
 Este projeto foi desenvolvido por um grupo de alunos da Trybe como parte do curso de desenvolvimento web.
-
