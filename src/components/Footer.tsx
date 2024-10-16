@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import "../styles/Footer.css";
+import drinkIcon from "../assets/icone-drink.png";
+import foodIcon from "../assets/icone-prato.png";
 
 function Footer() {
   return (
@@ -11,7 +13,7 @@ function Footer() {
           <Col xs={6} md={4} className="text-center">
             <Link to="/drinks">
               <img
-                src="src/assets/icone-drink.png"
+                src={drinkIcon}
                 data-testid="drinks-bottom-btn"
                 alt="Ícone de Bebida"
                 className="footer-icon"
@@ -21,7 +23,7 @@ function Footer() {
           <Col xs={6} md={4} className="text-center">
             <Link to="/meals">
               <img
-                src="src/assets/icone-prato.png"
+                src={foodIcon}
                 data-testid="meals-bottom-btn"
                 alt="Ícone de Talheres"
                 className="footer-icon"

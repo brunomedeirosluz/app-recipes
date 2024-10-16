@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import { Form, Button, Image } from "react-bootstrap";
+import logo from "../assets/logo.png";
 
 const INITIAL_LOGIN = {
   email: "",
@@ -35,12 +36,7 @@ export default function Login() {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 flex-column login-container">
       {/* Logo fora do formulário */}
-      <Image
-        src="src/assets/logo.png"
-        alt="Logo"
-        className="mb-4 logo-img"
-        fluid
-      />
+      <Image src={logo} alt="Logo" className="mb-4 logo-img" fluid />
 
       <Form onSubmit={handleSubmit} className="p-4 rounded shadow login-form">
         <Form.Group controlId="formEmail" className="mb-3">
