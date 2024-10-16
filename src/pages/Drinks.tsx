@@ -10,6 +10,11 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/Drinks.css";
 import { Container, Row, Col } from "react-bootstrap";
+import cocktailIcon from "../assets/cocktail.png";
+import ordinaryDrinkIcon from "../assets/ordinary drink.png";
+import allIcon from "../assets/Punch / Party Drink.png";
+import shakeIcon from "../assets/shake.png";
+import otherIcon from "../assets/Other / Unknown.png";
 
 type RecipeDrinks = {
   idDrink: string;
@@ -19,6 +24,14 @@ type RecipeDrinks = {
 
 type Category = {
   strCategory: string;
+};
+
+const categoryIcons: any = {
+  Cocktail: cocktailIcon,
+  "Ordinary Drink": ordinaryDrinkIcon,
+  "Punch / Party Drink": allIcon,
+  Shake: shakeIcon,
+  "Other / Unknown": otherIcon,
 };
 
 function Drinks() {
@@ -32,8 +45,8 @@ function Drinks() {
       try {
         const response = await fetchNameDrinks("cocktail");
         if (response.drinks && Array.isArray(response.drinks)) {
-          setRecipesDrinks(response.drinks.slice(0, 12));
-          setDataApi({ meals: [], drinks: response.drinks.slice(0, 12) });
+          setRecipesDrinks(response.drinks);
+          setDataApi({ meals: [], drinks: response.drinks });
         } else {
           setRecipesDrinks([]);
         }
@@ -51,7 +64,7 @@ function Drinks() {
         if (response.drinks && Array.isArray(response.drinks)) {
           setCategories(response.drinks.slice(0, 5));
         } else {
-          setCategories([]); // Handle case with no categories
+          setCategories([]);
         }
       } catch (error) {
         console.error("Erro ao carregar categorias:", error);
@@ -99,7 +112,7 @@ function Drinks() {
               data-testid={`${category.strCategory}-category-filter`}
               style={{ cursor: "pointer" }}>
               <img
-                src={`src/assets/${category.strCategory}.png`}
+                src={categoryIcons[category.strCategory]}
                 alt={category.strCategory}
                 className="category-icon"
               />
@@ -125,7 +138,7 @@ function Drinks() {
                           src={recipe.strDrinkThumb}
                           alt={recipe.strDrink}
                           data-testid={`${index}-card-img`}
-                          className="img-fluid" // Faz com que a imagem seja responsiva
+                          className="img-fluid"
                         />
                         <p data-testid={`${index}-card-name`}>
                           {recipe.strDrink}

@@ -32,7 +32,7 @@ function ProfileComponent() {
       className="my-4 d-flex flex-column align-items-center justify-content-center"
       style={{ minHeight: "60vh" }}>
       <h3 data-testid="profile-email" className="text-primary text-center mb-4">
-        {user.email || "Email not found"}
+        {`Olá, ` + user.email || "Email not found"}
       </h3>
 
       <Row className="w-100">

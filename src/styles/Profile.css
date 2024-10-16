@@ -1,22 +1,21 @@
-/* Se desejar personalizar ainda mais o estilo */
 .section {
-  background-color: #f7f7f7; /* Fundo claro para destacar o conteúdo */
+  background-color: #f7f7f7;
 }
 
 h3 {
-  color: #41197f; /* Cor do texto roxo */
+  color: #41197f;
 }
 
 .btn-warning {
-  background-color: #fcc436; /* Cor de fundo amarela */
-  color: #41197f; /* Cor do texto roxo */
+  background-color: #fcc436;
+  color: #41197f;
 }
 
 .btn-danger {
-  background-color: #dc3545; /* Cor vermelha para o botão de logout */
-  color: white; /* Texto branco para o botão de logout */
+  background-color: #dc3545;
+  color: white;
 }
 
 .btn-danger:hover {
-  background-color: #c82333; /* Escurece o botão de logout ao passar o mouse */
+  background-color: #c82333;
 }

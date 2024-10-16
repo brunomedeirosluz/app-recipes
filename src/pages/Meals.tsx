@@ -11,6 +11,12 @@ import Footer from "../components/Footer";
 import Recipes from "../components/Recipes";
 import { Container, Row, Col } from "react-bootstrap";
 import "../styles/Meals.css";
+import allIcon from "../assets/All.png";
+import beefIcon from "../assets/beef.png";
+import breakfastIcon from "../assets/breakfast.png";
+import chickenIcon from "../assets/chicken.png";
+import dessertIcon from "../assets/dessert.png";
+import goatIcon from "../assets/goat.png";
 
 type Recipe = {
   idMeal: string;
@@ -20,6 +26,14 @@ type Recipe = {
 
 type Category = {
   strCategory: string;
+};
+
+const categoryIcons: any = {
+  Beef: beefIcon,
+  Breakfast: breakfastIcon,
+  Chicken: chickenIcon,
+  Dessert: dessertIcon,
+  Goat: goatIcon,
 };
 
 function Meals() {
@@ -33,7 +47,7 @@ function Meals() {
       try {
         const response = await fetchName("");
         if (response.meals && response.meals.length > 0) {
-          setRecipesMeals(response.meals.slice(0, 12));
+          setRecipesMeals(response.meals);
         }
       } catch (error) {
         console.error("Erro ao carregar as receitas:", error);
@@ -78,7 +92,6 @@ function Meals() {
     <>
       <Header pageTitle="Meals" showSearchIcon />
       <Container className="my-4">
-        {/* Botões de Categoria */}
         <div className="category-buttons d-flex justify-content-center mb-4 flex-wrap">
           {categories.map((category, index) => (
             <div
@@ -88,7 +101,7 @@ function Meals() {
               data-testid={`${category.strCategory}-category-filter`}
               style={{ cursor: "pointer" }}>
               <img
-                src={`src/assets/${category.strCategory}.png`}
+                src={categoryIcons[category.strCategory]}
                 alt={category.strCategory}
                 className="category-icon img-fluid"
               />
@@ -99,15 +112,10 @@ function Meals() {
             onClick={() => handleCategoryClick("all")}
             data-testid="All-category-filter"
             style={{ cursor: "pointer" }}>
-            <img
-              src="src/assets/All.png"
-              alt="All"
-              className="category-icon img-fluid"
-            />
+            <img src={allIcon} alt="All" className="category-icon img-fluid" />
           </div>
         </div>
 
-        {/* Cards de Receitas */}
         <Row>
           {dataApi.meals &&
             dataApi.meals.length === 0 &&

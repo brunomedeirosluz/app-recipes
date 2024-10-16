@@ -4,6 +4,11 @@ import { FavoriteRecipesType } from "../Type/type";
 import Header from "../components/Header";
 import { Container, Row, Col } from "react-bootstrap";
 import "../styles/FavoriteRecipes.css";
+import allFoods from "../assets/all-2.png";
+import foods from "../assets/foods.png";
+import drinks from "../assets/drinks.png";
+import heart from "../assets/heart.png";
+import share from "../assets/Share.png";
 
 export default function FavoriteRecipes() {
   const [favorites, setFavorites] = useState<FavoriteRecipesType[]>([]);
@@ -55,21 +60,21 @@ export default function FavoriteRecipes() {
             style={{ cursor: "pointer" }}
             className="mx-2"
             data-testid="filter-by-all-btn">
-            <img src="src/all-2.png" alt="logo-all-foods" />
+            <img src={allFoods} alt="logo-all-foods" />
           </a>
           <a
             onClick={() => handleFilterChange("meal")}
             style={{ cursor: "pointer" }}
             className="mx-2"
             data-testid="filter-by-meal-btn">
-            <img src="src/foods.png" alt="logo-food" />
+            <img src={foods} alt="logo-food" />
           </a>
           <a
             onClick={() => handleFilterChange("drink")}
             style={{ cursor: "pointer" }}
             className="mx-2"
             data-testid="filter-by-drink-btn">
-            <img src="src/drinks.png" alt="logo-food" />
+            <img src={drinks} alt="logo-food" />
           </a>
         </div>
 
@@ -108,7 +113,7 @@ export default function FavoriteRecipes() {
                       onClick={() => handleRemoveFavorite(recipe.id)}>
                       <img
                         data-testid={`${index}-horizontal-favorite-btn`}
-                        src="src/heart.png"
+                        src={heart}
                         alt="Favorite"
                         style={{ width: "20px", cursor: "pointer" }}
                       />
@@ -121,7 +126,7 @@ export default function FavoriteRecipes() {
                       }>
                       <img
                         data-testid={`${index}-horizontal-share-btn`}
-                        src="src/Share.png"
+                        src={share}
                         alt="Share"
                         style={{ width: "20px", cursor: "pointer" }}
                       />

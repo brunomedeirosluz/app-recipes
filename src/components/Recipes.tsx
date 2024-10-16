@@ -11,7 +11,7 @@ function Recipes(): JSX.Element {
   return (
     <div>
       <Row>
-        {recipes.slice(0, 12).map((recipe, index) => (
+        {recipes.map((recipe, index) => (
           <Col
             xs={12}
             sm={6}
