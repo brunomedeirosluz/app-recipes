@@ -27,26 +27,32 @@ O sistema permite visualizar, buscar, filtrar, favoritar, compartilhar e acompan
 O projeto foi desenvolvido para ser 100% responsivo, adaptando-se a diferentes tamanhos de tela.
 
 ### Visualização Mobile:
+
 ![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/2c3e9918c6bf6fd94967f530e996e8dac57735e0/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.44.13.png)
 ![Versão Mobile](https://github.com/brunomedeirosluz/app-recipes/blob/c35f0dc2252076ff5b69b16cd3487aa722c058af/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.45.06.png)
 
 ### Visualização em Notebook:
+
 ![Versão Notebook](https://github.com/brunomedeirosluz/app-recipes/blob/053372bc31612fed3ef3a640ff29114b60589d35/Captura%20de%20Tela%202024-10-15%20a%CC%80s%2013.45.33.png)
 
 ## APIs Utilizadas
 
 ### TheMealDB API
+
 O TheMealDB é um banco de dados aberto com receitas e ingredientes de todo o mundo.
 
 Endpoints importantes:
+
 - Listar categorias: [https://www.themealdb.com/api/json/v1/1/list.php?c=list](https://www.themealdb.com/api/json/v1/1/list.php?c=list)
 - Listar nacionalidades: [https://www.themealdb.com/api/json/v1/1/list.php?a=list](https://www.themealdb.com/api/json/v1/1/list.php?a=list)
 - Listar ingredientes: [https://www.themealdb.com/api/json/v1/1/list.php?i=list](https://www.themealdb.com/api/json/v1/1/list.php?i=list)
 
 ### TheCocktailDB API
+
 Similar ao TheMealDB, focado em bebidas.
 
 Endpoints importantes:
+
 - Documentação geral: [https://www.thecocktaildb.com/api.php](https://www.thecocktaildb.com/api.php)
 
 ## Requisitos Técnicos
