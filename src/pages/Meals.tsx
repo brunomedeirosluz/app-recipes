@@ -88,7 +88,7 @@ function Meals() {
               data-testid={`${category.strCategory}-category-filter`}
               style={{ cursor: "pointer" }}>
               <img
-                src={`src/${category.strCategory}.png`}
+                src={`src/assets/${category.strCategory}.png`}
                 alt={category.strCategory}
                 className="category-icon img-fluid"
               />
@@ -100,7 +100,7 @@ function Meals() {
             data-testid="All-category-filter"
             style={{ cursor: "pointer" }}>
             <img
-              src="src/All.png"
+              src="src/assets/All.png"
               alt="All"
               className="category-icon img-fluid"
             />

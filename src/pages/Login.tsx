@@ -36,7 +36,7 @@ export default function Login() {
     <div className="d-flex justify-content-center align-items-center vh-100 flex-column login-container">
       {/* Logo fora do formulário */}
       <Image
-        src="src/assets/logo.svg"
+        src="src/assets/logo.png"
         alt="Logo"
         className="mb-4 logo-img"
         fluid
@@ -48,7 +48,6 @@ export default function Login() {
             type="email"
             placeholder="E-Mail"
             name="email"
-            s
             value={formData.email}
             onChange={handleChange}
             data-testid="email-input"
