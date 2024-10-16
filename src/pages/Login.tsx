@@ -35,7 +35,12 @@ export default function Login() {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 flex-column login-container">
       {/* Logo fora do formulário */}
-      <Image src="src/logo.png" alt="Logo" className="mb-4 logo-img" fluid />
+      <Image
+        src="src/assets/logo.svg"
+        alt="Logo"
+        className="mb-4 logo-img"
+        fluid
+      />
 
       <Form onSubmit={handleSubmit} className="p-4 rounded shadow login-form">
         <Form.Group controlId="formEmail" className="mb-3">
@@ -43,6 +48,7 @@ export default function Login() {
             type="email"
             placeholder="E-Mail"
             name="email"
+            s
             value={formData.email}
             onChange={handleChange}
             data-testid="email-input"
