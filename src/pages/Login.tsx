@@ -5,8 +5,8 @@ import { Form, Button, Image } from "react-bootstrap";
 import logo from "../assets/logo.png";
 
 const INITIAL_LOGIN = {
-  email: "",
-  password: "",
+  email: "teste@teste.com.br",
+  password: "sfa112412aefa",
 };
 
 export default function Login() {
