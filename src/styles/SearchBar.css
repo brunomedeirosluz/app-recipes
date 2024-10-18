@@ -1,5 +1,7 @@
 .search-bar {
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .search-form {
@@ -14,7 +16,6 @@
 }
 
 .search-input {
-  width: 50%;
   padding: 10px;
   border-radius: 5px 0 0 5px;
   color: #41197f;
@@ -36,6 +37,7 @@
 
 .form-check-input {
   margin-right: 5px;
+  margin-bottom: 10px;
 }
 
 .form-check-label {

@@ -12,6 +12,7 @@ import {
 } from "../services/FetchAPIDrinks";
 import GlobalContext from "../context/GlobalContext";
 import "../styles/SearchBar.css";
+import { Col } from "react-bootstrap";
 
 function SearchBar(): JSX.Element {
   const { setDataApi } = useContext(GlobalContext);
@@ -108,72 +109,74 @@ function SearchBar(): JSX.Element {
   };
 
   return (
-    <form onSubmit={handleSearch} className="search-form">
-      <div className="input-group">
-        <input
-          type="text"
-          placeholder="Search"
-          data-testid="search-input"
-          onChange={(event) => setText(event.target.value)}
-          className="form-control search-input"
-        />
-        <div className="input-group-append">
-          <button
-            type="submit"
-            data-testid="exec-search-btn"
-            className="btn btn-warning search-button">
-            Search
-          </button>
-        </div>
-      </div>
-
-      <div className="radio-options">
-        <div className="form-check form-check-inline">
+    <Col xs={11} sm={10} md={9} lg={8}>
+      <form onSubmit={handleSearch} className="search-form">
+        <div className="input-group mb-3">
           <input
-            type="radio"
-            name="radio"
-            id="ingredient"
-            value="ingredient"
-            onChange={handleChange}
-            data-testid="ingredient-search-radio"
-            className="form-check-input"
+            type="text"
+            placeholder="Search"
+            data-testid="search-input"
+            onChange={(event) => setText(event.target.value)}
+            className="form-control search-input"
           />
-          <label htmlFor="ingredient" className="form-check-label">
-            Ingredient
-          </label>
+          <div className="input-group-append">
+            <button
+              type="submit"
+              data-testid="exec-search-btn"
+              className="btn btn-warning search-button">
+              Search
+            </button>
+          </div>
         </div>
 
-        <div className="form-check form-check-inline">
-          <input
-            type="radio"
-            name="radio"
-            id="name"
-            value="name"
-            onChange={handleChange}
-            data-testid="name-search-radio"
-            className="form-check-input"
-          />
-          <label htmlFor="name" className="form-check-label">
-            Name
-          </label>
-        </div>
+        <div className="radio-options">
+          <div className="form-check form-check-inline">
+            <input
+              type="radio"
+              name="radio"
+              id="ingredient"
+              value="ingredient"
+              onChange={handleChange}
+              data-testid="ingredient-search-radio"
+              className="form-check-input"
+            />
+            <label htmlFor="ingredient" className="form-check-label">
+              Ingredient
+            </label>
+          </div>
 
-        <div className="form-check form-check-inline">
-          <input
-            type="radio"
-            name="radio"
-            id="first letter"
-            value="first letter"
-            onChange={handleChange}
-            data-testid="first-letter-search-radio"
-            className="form-check-input"
-          />
-          <label htmlFor="first letter" className="form-check-label">
-            First letter
-          </label>
+          <div className="form-check form-check-inline">
+            <input
+              type="radio"
+              name="radio"
+              id="name"
+              value="name"
+              onChange={handleChange}
+              data-testid="name-search-radio"
+              className="form-check-input"
+            />
+            <label htmlFor="name" className="form-check-label">
+              Name
+            </label>
+          </div>
+
+          <div className="form-check form-check-inline">
+            <input
+              type="radio"
+              name="radio"
+              id="first-letter"
+              value="first letter"
+              onChange={handleChange}
+              data-testid="first-letter-search-radio"
+              className="form-check-input"
+            />
+            <label htmlFor="first-letter" className="form-check-label">
+              First letter
+            </label>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </Col>
   );
 }
 
