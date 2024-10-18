@@ -1,5 +1,9 @@
 # Recipes App
 
+## Deploy
+Confira o projeto em: [Recipes App Deploy](https://recipesdrinksandfoods.netlify.app/)
+
+
 Este projeto foi desenvolvido como parte do curso da Trybe e em colaboração com outros membros do grupo. Utilizamos o Trello como ferramenta Kanban para gerenciar as tarefas.
 
 ## Descrição
